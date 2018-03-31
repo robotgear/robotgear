@@ -21,5 +21,7 @@ from market import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index)
+    url(r'^$', views.index),
+    url(r'^login/', views.loginView),
+    url(r'^logout/', views.logoutView)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
