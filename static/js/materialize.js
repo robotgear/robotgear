@@ -3168,7 +3168,7 @@ M.throttle = function (func, wait, options) {
       }
 
       /**
-       * Animate image in
+       * Animate img in
        */
 
     }, {
@@ -3201,7 +3201,7 @@ M.throttle = function (func, wait, options) {
       }
 
       /**
-       * Animate image out
+       * Animate img out
        */
 
     }, {
@@ -3300,7 +3300,7 @@ M.throttle = function (func, wait, options) {
           }
         });
 
-        // Put before in origin image to preserve z-index layering.
+        // Put before in origin img to preserve z-index layering.
         this.$el.before(this.$overlay);
 
         // Set dimensions if needed
@@ -3408,7 +3408,7 @@ M.throttle = function (func, wait, options) {
 
         this._animateImageOut();
 
-        // Remove Caption + reset css settings on image
+        // Remove Caption + reset css settings on img
         if (this.caption !== "") {
           anim({
             targets: this.$photoCaption[0],
@@ -6710,11 +6710,11 @@ M.throttle = function (func, wait, options) {
         _this27._animateCaptionIn(el, 0);
       });
 
-      // Move img src into background-image
+      // Move img src into background-img
       this.$slides.find('img').each(function (el) {
-        var placeholderBase64 = 'data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+        var placeholderBase64 = 'data:img/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         if ($(el).attr('src') !== placeholderBase64) {
-          $(el).css('background-image', 'url("' + $(el).attr('src') + '")');
+          $(el).css('background-img', 'url("' + $(el).attr('src') + '")');
           $(el).attr('src', placeholderBase64);
         }
       });
@@ -7119,7 +7119,7 @@ M.throttle = function (func, wait, options) {
   /**
    * @typedef {Object} chip
    * @property {String} tag  chip tag string
-   * @property {String} [image]  chip avatar image string
+   * @property {String} [img]  chip avatar img string
    */
 
   /**
@@ -7345,7 +7345,7 @@ M.throttle = function (func, wait, options) {
         $(closeIcon).addClass('material-icons close');
         closeIcon.textContent = 'close';
 
-        // attach image if needed
+        // attach img if needed
         if (chip.image) {
           var img = document.createElement('img');
           img.setAttribute('src', chip.image);
@@ -9923,7 +9923,7 @@ M.throttle = function (func, wait, options) {
   var _defaults = {
     duration: 200, // ms
     dist: -100, // zoom scale TODO: make this more intuitive as an option
-    shift: 0, // spacing for center image
+    shift: 0, // spacing for center img
     padding: 0, // Padding between non center items
     fullWidth: false, // Change to full width styles
     indicators: false, // Toggle indicators
@@ -10120,7 +10120,7 @@ M.throttle = function (func, wait, options) {
     }, {
       key: "_handleCarouselTap",
       value: function _handleCarouselTap(e) {
-        // Fixes firefox draggable image bug
+        // Fixes firefox draggable img bug
         if (e.type === 'mousedown' && $(e.target).is('img')) {
           e.preventDefault();
         }
@@ -10285,7 +10285,7 @@ M.throttle = function (func, wait, options) {
 
       /**
        * Set carousel height based on first slide
-       * @param {Booleam} imageOnly - true for image slides
+       * @param {Booleam} imageOnly - true for img slides
        */
 
     }, {
@@ -10297,19 +10297,19 @@ M.throttle = function (func, wait, options) {
         var firstImage = firstSlide.find('img').first();
         if (firstImage.length) {
           if (firstImage[0].complete) {
-            // If image won't trigger the load event
+            // If img won't trigger the load event
             var imageHeight = firstImage.height();
             if (imageHeight > 0) {
               this.$el.css('height', imageHeight + 'px');
             } else {
-              // If image still has no height, use the natural dimensions to calculate
+              // If img still has no height, use the natural dimensions to calculate
               var naturalWidth = firstImage[0].naturalWidth;
               var naturalHeight = firstImage[0].naturalHeight;
               var adjustedHeight = this.$el.width() / naturalWidth * naturalHeight;
               this.$el.css('height', adjustedHeight + 'px');
             }
           } else {
-            // Get height when image is loaded normally
+            // Get height when img is loaded normally
             firstImage.one('load', function (el, i) {
               _this45.$el.css('height', el.offsetHeight + 'px');
             });
