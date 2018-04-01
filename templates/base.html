@@ -12,17 +12,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">Account Settings</a></li>
+  <li><a href="#!">My Profile</a></li>
+  <li class="divider"></li>
+  <li><a href={% url 'logout' %}>Logout</a></li>
+</ul>
 <nav class="red">
     <div class="nav-wrapper container">
         <a href={% url 'index' %} class="brand-logo"><img class="logo-img hide-on-small-only" src={% static "img/RoboGearTrade.svg" %}>RobotGear</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-
             <li><a href="badges.html">Browse</a></li>
             <li><a href="collapsible.html">Submit</a></li>
             <li><a href="mobile.html">About</a></li>
             {% if user.is_authenticated %}
-                <li><a href={% url 'logout' %}>Logout</a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Welcome back, {{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
             {% else %}
                 <li><a href={% url 'login' %}>Login</a></li>
             {% endif %}
