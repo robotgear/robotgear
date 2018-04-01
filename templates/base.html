@@ -27,7 +27,7 @@
             <li><a href="collapsible.html">Submit</a></li>
             <li><a href="mobile.html">About</a></li>
             {% if user.is_authenticated %}
-                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Welcome back, {{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Welcome back, {{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
             {% else %}
                 <li><a href={% url 'login' %}>Login</a></li>
             {% endif %}

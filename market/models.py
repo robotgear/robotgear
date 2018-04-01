@@ -12,4 +12,4 @@ class Post(models.Model):
 
 
 class User(AbstractUser):
-    pass
+	email_confirmed = models.BooleanField(default=False)

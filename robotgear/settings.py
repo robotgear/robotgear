@@ -124,4 +124,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
+# Configure custom user model
 AUTH_USER_MODEL = 'market.User'
+
+# Configure email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

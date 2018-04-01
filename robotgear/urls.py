@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/', views.loginView, name='login'),
     url(r'^logout/', views.logoutView, name='logout'),
-    url(r'register/', views.registerView, name='register')
+    url(r'register/', views.registerView, name='register'),
+    url(r'^activate/<str:uidb64>/<str:token>',
+        views.activate, name='activate'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
