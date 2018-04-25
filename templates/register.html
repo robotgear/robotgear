@@ -34,4 +34,17 @@
         </button>
     <p></p>
     </form>
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="{{ field.help_text }}">person</i>
+                <input id="{{ field.id_for_label }}" type="text" class="validate" name="{{ field.html_name }}" required>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+        {% endfor %}
+        <button class="btn waves-effect waves-light" type="submit" name="action">Register
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
 {% endblock %}
