@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block navbar %}
+<div class="ui top fixed inverted menu">
+      <a href="#" class="header item">
+        <img class="logo" src="static/img/RobotGearTrade.svg">
+        RobotGear.Trade
+      </a>
+      <div class="right menu">
+          {% if user.is_authenticated %}
+              <a class="item">Welcome, {{ user.username }}. Thanks for logging in.</a>
+          {% else %}
+              <a class="item">Welcome, new user. Please log in.</a>
+          {% endif %}
+      </div>
+</div>
+{% endblock %}
