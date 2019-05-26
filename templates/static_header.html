@@ -1,15 +1,33 @@
 {% extends "base.html" %}
 {% block navbar %}
+      <style type="text/css">
+  body {
+    background-color: #FFFFFF;
+  }
+  .ui.menu .item img.logo {
+    margin-right: 1.5em;
+  }
+  .main.container {
+    margin-top: 7em;
+  }
+  .wireframe {
+    margin-top: 2em;
+  }
+  .ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+  }
+  </style>
 <div class="ui top fixed inverted menu">
-      <a href="#" class="header item">
-        <img class="logo" src="static/img/RobotGearTrade.svg">
+      <a href="/" class="header item">
+        <img class="logo" src="/static/img/RoboGearTrade.svg">
         RobotGear.Trade
       </a>
       <div class="right menu">
           {% if user.is_authenticated %}
               <a class="item">Welcome, {{ user.username }}. Thanks for logging in.</a>
           {% else %}
-              <a class="item">Welcome, new user. Please log in.</a>
+              <a href="{% url 'login' %}" class="item">Welcome, new user. Please log in.</a>
           {% endif %}
       </div>
 </div>
