@@ -2,10 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" type="text/css" href="/static/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="{%  static 'semantic.css' %}">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -26,7 +23,7 @@
 
 <div class="ui inverted vertical footer segment">
     <div class="ui center aligned container">
-      <img src="/static/img/RoboGearTrade.svg" class="ui centered mini image">
+      <img src="{% static 'img/RoboGearTrade.svg' %}" class="ui centered mini image">
       <div class="ui horizontal inverted small divided link list">
         <a class="item" href="#">Site Map</a>
         <a class="item" href="#">Contact Us</a>
