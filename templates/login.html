@@ -13,21 +13,61 @@
     .column {
       max-width: 450px;
     }
+    {% if messages %}
+    .ui.form .error.message {
+        display: block;
+    }
+    {% endif %}
   </style>
+    <script>
+      $(document)
+    .ready(function() {
+      $('.ui.form')
+        .form({
+          fields: {
+            username: {
+              identifier  : 'username',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your username'
+                }
+              ]
+            },
+            password: {
+              identifier  : 'password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your password'
+                },
+                {
+                  type   : 'length[6]',
+                  prompt : 'Your password must be at least 6 characters'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    })
+  ;
+  </script>
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui teal image header">
+    <form class="ui large form" action="{% url 'login' %}" method="POST">
+        {%  csrf_token %}
+      <div class="ui stacked segment">
+          <h2 class="ui image header">
       <img src="/static/img/RoboGearTrade.svg" class="image">
       <div class="content">
         Log-in to your account
       </div>
     </h2>
-    <form class="ui large form">
-      <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="email" placeholder="E-mail address">
+            <input type="text" name="username" placeholder="Username">
           </div>
         </div>
         <div class="field">
@@ -36,10 +76,20 @@
             <input type="password" name="password" placeholder="Password">
           </div>
         </div>
-        <div class="ui fluid large teal submit button">Login</div>
+        <div class="ui fluid large submit button">Login</div>
       </div>
 
-      <div class="ui error message"></div>
+      <div class="ui error message">
+          {% if messages %}
+              <ul class="list">
+              {% for message in messages %}
+                  <li>
+                  {{ message }}
+                  </li>
+              {% endfor %}
+              </ul>
+          {% endif %}
+      </div>
 
     </form>
 

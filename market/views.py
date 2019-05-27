@@ -30,8 +30,8 @@ def loginView(request):
 			messages.success(request, "Welcome back, {}".format(user.username))
 			return redirect(index)
 		else:
-			messages.error(request, "Inorrect login details.")
-			return render(request,'login.html')
+			messages.error(request, "Incorrect login details.")
+			return render(request, 'login.html')
 	else:
 		return render(request, 'login.html')
 
@@ -49,7 +49,7 @@ def registerView(request):
 	if request.method == "POST":
 		form = RegisterForm(request.POST)
 		if form.is_valid():
-			user = User(username = form.username, email=form.email,first_name=form.first_name,last_name=form.last_name)
+			user = User(username=form.username, email=form.email, first_name=form.first_name, last_name=form.last_name)
 			try:
 				password_validation.validate_password(form.password,user,password_validators='AUTH_PASSWORD_VALIDATORS')
 				user.set_password(form.password)
