@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, password_validation
 from django.core.exceptions import ValidationError
-from market.models import User
+from users.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.db import IntegrityError
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode
-from market.tokens import account_activation_token
+from users.tokens import account_activation_token
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site

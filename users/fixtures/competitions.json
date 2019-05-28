@@ -1,6 +1,6 @@
 [
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 0,
     "fields": {
       "abbreviation": "FRC",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 1,
     "fields": {
       "abbreviation": "FTC",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 2,
     "fields": {
       "abbreviation": "FLL",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 3,
     "fields": {
       "abbreviation": "JFLL",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 4,
     "fields": {
       "abbreviation": "VRC",
@@ -45,7 +45,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 5,
     "fields": {
       "abbreviation": "VIQ",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "model": "market.Competition",
+    "model": "users.Competition",
     "pk": 6,
     "fields": {
       "abbreviation": "BEST",

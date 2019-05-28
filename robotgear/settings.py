@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'market',
+    'users',
     'debug_toolbar'
 ]
 
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
 ]
 
 # Configure custom user model
-AUTH_USER_MODEL = 'market.User'
+AUTH_USER_MODEL = 'users.User'
 
 # Configure email backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

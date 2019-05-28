@@ -18,16 +18,13 @@ from django.urls import path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
-from market import views
+from users.urls import urls
+from users import views as users_views
 import debug_toolbar
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
-    path(r'', views.index, name='index'),
-    path(r'login/', views.loginView, name='login'),
-    path(r'logout/', views.logoutView, name='logout'),
-    path(r'register/', views.registerView, name='register'),
-    path(r'activate/<str:uidb64>/<str:token>/', views.activate, name="activate"),
+    path(r'', users_views.index, name='index'),
+    path(r'auth/', include(urls)),
     path(r'__debug__/', include(debug_toolbar.urls))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
