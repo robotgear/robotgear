@@ -1,0 +1,65 @@
+[
+  {
+    "model": "market.Competition",
+    "pk": 0,
+    "fields": {
+      "abbreviation": "FRC",
+      "full_name": "FIRST Robotics Competition",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 1,
+    "fields": {
+      "abbreviation": "FTC",
+      "full_name": "FIRST Tech Challenge",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 2,
+    "fields": {
+      "abbreviation": "FLL",
+      "full_name": "FIRST LEGO League",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 3,
+    "fields": {
+      "abbreviation": "JFLL",
+      "full_name": "FIRST Lego League Jr.",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 4,
+    "fields": {
+      "abbreviation": "VRC",
+      "full_name": "VEX Robotics Competition",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 5,
+    "fields": {
+      "abbreviation": "VIQ",
+      "full_name": "VEX IQ Challenge",
+      "link": ""
+    }
+  },
+  {
+    "model": "market.Competition",
+    "pk": 6,
+    "fields": {
+      "abbreviation": "BEST",
+      "full_name": "BEST Robotics Competition",
+      "link": ""
+    }
+  }
+]

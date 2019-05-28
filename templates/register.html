@@ -1,50 +1,103 @@
 {% extends "static_header.html" %}
 {% block body %}
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="row">
-        <div class="input-field col s12 m6">
-            <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="This will be what you log in with, as well as displayed publicly">person</i>
-            <input id="username" type="text" class="validate" name="username" required>
-            <label for="username">Username</label>
+        body > .grid {
+            height: 800px;
+        }
+
+        .header .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+        {% if messages %}
+            .ui.form .error.message {
+                display: block;
+            }
+        {% endif %}
+    </style>
+    <script>
+        $(document)
+            .ready(function () {
+                $('.ui.form')
+                    .form({
+                        fields: {
+                            username: {
+                                identifier: 'username',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your username'
+                                    }
+                                ]
+                            },
+                            password: {
+                                identifier: 'password',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your password'
+                                    },
+                                    {
+                                        type: 'length[6]',
+                                        prompt: 'Your password must be at least 6 characters'
+                                    }
+                                ]
+                            },
+                            email:{
+                                identifier: 'email',
+                                rules: [
+                                    {
+                                        type: 'email',
+                                        prompt: 'Please enter a valid email.'
+                                    }
+                                ]
+                            }
+                        }
+                    })
+                ;
+            })
+        ;
+    </script>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <form method="POST" class="ui form stacked segment">
+                {% csrf_token %}
+                <div class="two fields">
+                    <div class="required field">
+                        <label>Username</label>
+                        <input id="username" type="text" placeholder="Username" name="username">
+                    </div>
+                    <div class="required field">
+                        <label>Password</label>
+                        <input id="password" type="password" placeholder="Password" name="password">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input id="email" type="email" class="required" name="email" placeholder="Email">
+                <button class="ui button" type="submit" name="action">Register
+                </button>
+                </div>
+                <div class="ui error message">
+                    {% if messages %}
+                        <ul class="list">
+                            {% for message in messages %}
+                                <li>
+                                    {{ message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </form>
         </div>
-        <div class="input-field col s12 m6">
-            <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="Your password must not be common, a part of your information, and over 8 characters">lock</i>
-            <input id="password" type="password" class="validate" name="password" required>
-            <label for="password">Password</label>
-        </div>
-        </div>
-        <div class="input-field col s12">
-            <input id="email" type="email" class="validate" name="email" required>
-            <label for="email">Email</label>
-        </div>
-        <div class="row">
-        <div class="input-field col s12 m6">
-            <input id="first_name" type="text" class="validate" name="first_name">
-            <label for="first_name">First Name</label>
-        </div>
-        <div class="input-field col s12 m6">
-            <input id="last_name" type="text" class="validate" name="last_name">
-            <label for="last_name">Last Name</label>
-        </div>
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Register
-            <i class="material-icons right">send</i>
-        </button>
-    <p></p>
-    </form>
-    <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="{{ field.help_text }}">person</i>
-                <input id="{{ field.id_for_label }}" type="text" class="validate" name="{{ field.html_name }}" required>
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            </div>
-        {% endfor %}
-        <button class="btn waves-effect waves-light" type="submit" name="action">Register
-            <i class="material-icons right">send</i>
-        </button>
-    </form>
+    </div>
 {% endblock %}

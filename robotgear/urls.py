@@ -13,7 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import include
+from django.urls import path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -22,10 +23,11 @@ from market import views
 import debug_toolbar
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index'),
-    url(r'^login/', views.loginView, name='login'),
-    url(r'^logout/', views.logoutView, name='logout'),
-    url(r'^register/', views.registerView, name='register'),
-    url(r'^__debug__/', include(debug_toolbar.urls))
+    path(r'admin/', admin.site.urls),
+    path(r'', views.index, name='index'),
+    path(r'login/', views.loginView, name='login'),
+    path(r'logout/', views.logoutView, name='logout'),
+    path(r'register/', views.registerView, name='register'),
+    path(r'activate/<str:uidb64>/<str:token>/', views.activate, name="activate"),
+    path(r'__debug__/', include(debug_toolbar.urls))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
