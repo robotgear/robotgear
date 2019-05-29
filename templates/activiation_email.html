@@ -2,4 +2,4 @@ Hi {{ user.username }},
 
 Thank you for creating a account at RobotGear.trade. Before you can use your account, you have to confirm this email. Click the link below to confirm your email address:
 
-http://{{ domain }}{% url 'activate' uid token %}
+{{ protocol }}://{{ domain }}{% url 'activate' uid token %}

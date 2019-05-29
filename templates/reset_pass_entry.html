@@ -29,15 +29,6 @@
                 $('.ui.form')
                     .form({
                         fields: {
-                            username: {
-                                identifier: 'username',
-                                rules: [
-                                    {
-                                        type: 'empty',
-                                        prompt: 'Please enter your username'
-                                    }
-                                ]
-                            },
                             password: {
                                 identifier: 'password',
                                 rules: [
@@ -46,8 +37,21 @@
                                         prompt: 'Please enter your password'
                                     },
                                     {
-                                        type: 'length[6]',
-                                        prompt: 'Your password must be at least 6 characters'
+                                        type: 'minLength[6]',
+                                        prompt: 'Your password is too short'
+                                    }
+                                ]
+                            },
+                            password_check: {
+                                identifier: 'password2',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your password'
+                                    },
+                                    {
+                                        type: 'match[password]',
+                                        prompt:"Make sure both passwords match"
                                     }
                                 ]
                             }
@@ -59,28 +63,28 @@
     </script>
     <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <form class="ui large form" action="{% url 'login' %}" method="POST">
+            <form class="ui large form" method="POST">
                 {% csrf_token %}
                 <div class="ui stacked segment">
                     <h2 class="ui image header">
                         <img src="/static/img/RoboGearTrade.svg" class="image">
                         <div class="content">
-                            Log-in to your account
+                            {{ username }}, Reset Your Password
                         </div>
                     </h2>
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="user icon"></i>
-                            <input type="text" name="username" placeholder="Username">
-                        </div>
-                    </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <div class="ui fluid large submit button">Login</div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password2" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="ui fluid large submit button">Reset Password</div>
                 </div>
 
                 <div class="ui error message">
@@ -96,13 +100,6 @@
                 </div>
 
             </form>
-
-            <div class="ui message">
-                New to us? <a href="{% url 'register' %}">Sign Up</a>
-            </div>
-            <div class="ui message">
-                Forgot your password? <a href="{% url 'reset' %}">Reset it</a>
-            </div>
         </div>
     </div>
 {% endblock %}

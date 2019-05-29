@@ -1,0 +1,5 @@
+Hi {{ user.username }},
+
+Somebody asked to reset your password. If you didn't request this, you can ignore this email. If you did, follow the link below.
+
+http://{{ domain }}{% url 'resetLink' uid token %}
