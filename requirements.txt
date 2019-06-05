@@ -2,3 +2,5 @@ django
 django-debug-toolbar
 Pillow
 psycopg2
+celery
+requests

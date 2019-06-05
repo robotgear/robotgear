@@ -69,7 +69,7 @@ def registerView(request):
 		if user is not None:
 			current_site = get_current_site(request)
 			subject = 'Activate Your MySite Account'
-			message = render_to_string('activiation_email.html', {
+			message = render_to_string('email/activiation_email.html', {
 				'user'  : user,
 				'domain': current_site.domain,
 				'uid'   : force_text(urlsafe_base64_encode(force_bytes(user.pk))),
@@ -136,14 +136,14 @@ def resetLinkView(request, uidb64, token):
 		user = None
 	if user is not None and default_token_generator.check_token(user, token):
 		if request.method == "GET":
-			return render(request, 'reset_pass_entry.html', context={'username': user.username})
+			return render(request, 'email/reset_pass_entry.html', context={'username': user.username})
 		elif request.method == "POST":
 			password = request.POST.get("password")
 			try:
 				password_validation.validate_password(password)
 			except ValidationError:
 				messages.error(request, "Invalid password.")
-				return render(request, 'reset_pass_entry.html')
+				return render(request, 'email/reset_pass_entry.html')
 			user.set_password(password)
 			user.save()
 			messages.success(request, "Password changed correctly.")
