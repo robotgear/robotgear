@@ -23,11 +23,22 @@ class TeamAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('update_FIRST_teams/', self.update_FIRST_teams),
+            path('update_FRC/', self.update_FRC),
+            path('update_FTC/', self.update_FTC)
         ]
         return my_urls + urls
 
-    def update_FIRST_teams(self, request):
+    def update_FRC(self, request):
+        updated, added = self.update_FIRST_teams("FRC", 2019)
+        self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
+        return redirect("../")
+
+    def update_FTC(self, request):
+        updated, added = self.update_FIRST_teams("FTC", 2018)
+        self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
+        return redirect("../")
+
+    def update_FIRST_teams(self, comp, year, current=False):
         data = {
             "size": 100000,
             "query": {
@@ -35,12 +46,12 @@ class TeamAdmin(admin.ModelAdmin):
                     "must": [
                         {
                             "match": {
-                                "profile_year": 2019
+                                "profile_year": year
                             }
                         },
                         {
                             "match": {
-                                "team_type": "FRC"
+                                "team_type": comp
                             }
                         }
                     ]
@@ -63,7 +74,6 @@ class TeamAdmin(admin.ModelAdmin):
         data = r.json()["hits"]["hits"]
         updated = 0
         added = 0
-        comp = Competition.objects.get(abbreviation="FRC")
         for team_data in data:
             team_data = team_data["_source"]
             if team_data["team_number_yearly"] > 100000:
@@ -73,16 +83,20 @@ class TeamAdmin(admin.ModelAdmin):
                 # can switch it to their real number when they get it)
                 continue
             obj, created = Team.objects.update_or_create(
-                country=team_data["countryCode"],
+                competition=Competition.objects.get(abbreviation=team_data["team_type"]),
                 team_num=team_data["team_number_yearly"],
-                zip_code=team_data["team_postalcode"],
-                lat=team_data["location"][0]["lat"],
-                long=team_data["location"][0]["lon"],
-                nickname=team_data["team_nickname"],
-                competition=comp
+                defaults={
+                    "zip_code": team_data["team_postalcode"],
+                    "country": team_data["countryCode"],
+                    "lat": team_data["location"][0]["lat"],
+                    "long": team_data["location"][0]["lon"],
+                    "nickname": team_data["team_nickname"]
+                }
             )
+            if current:
+                obj.nickname = team_data["team_nickname"]
+                obj.save()
             updated += 1
             if created:
                 added += 1
-        self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
-        return redirect("../")
+        return updated, added
