@@ -19,24 +19,20 @@ class CompetitionAdmin(admin.ModelAdmin):
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     change_list_template = "admin/competition_changelist.html"
-    list_display = ('team_num', 'nickname', 'competition_abbreviations')
+    list_display = ('team_name_w_comp', 'nickname')
+    search_fields = ('team_num', 'nickname')
+
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('update_FRC/', self.update_FRC),
-            path('update_FTC/', self.update_FTC)
+            path('update/<str:comp>/', self.update)
         ]
         return my_urls + urls
 
-    def update_FRC(self, request):
-        updated, added = self.update_FIRST_teams("FRC", 2019)
+    def update(self, request, comp):
+        updated, added = self.update_FIRST_teams(comp, 2019)
         self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
-        return redirect("../")
-
-    def update_FTC(self, request):
-        updated, added = self.update_FIRST_teams("FTC", 2018)
-        self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
-        return redirect("../")
+        return redirect("admin:users_team_changelist")
 
     def update_FIRST_teams(self, comp, year, current=False):
         data = {

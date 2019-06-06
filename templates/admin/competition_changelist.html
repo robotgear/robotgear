@@ -3,15 +3,27 @@
 {% block object-tools %}
     <p> The following buttons will pull the latest data from the FIRST servers about team registration. Keep in mind these take quite a while to run, so do not refresh your browser while they're running </p>
     <div>
-        <form action="update_FRC/" method="POST">
+        <form action="update/FRC/" method="POST">
             {% csrf_token %}
                 <button type="submit">Update FRC Teams</button>
         </form>
     </div>
     <div>
-        <form action="update_FTC/" method="POST">
+        <form action="update/FTC/" method="POST">
             {% csrf_token %}
                 <button type="submit">Update FTC Teams</button>
+        </form>
+    </div>
+    <div>
+        <form action="update/FLL/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Update FLL Teams</button>
+        </form>
+    </div>
+    <div>
+        <form action="update/JFLL/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Update JFLL Teams</button>
         </form>
     </div>
     <br />

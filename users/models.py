@@ -31,11 +31,12 @@ class Team(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['team_num', 'competition'], name="unique_team")
         ]
+        ordering = ['team_num', 'competition']
 
-    def competition_abbreviations(self):
-        return self.competition.abbreviation
+    def team_name_w_comp(self):
+        return "{}{}".format(self.competition.abbreviation, self.team_num)
 
-    competition_abbreviations.short_description = 'Competition'
+    team_name_w_comp.short_description = 'Team Number'
 
     def __str__(self):
         return "{}{}".format(self.competition.abbreviation, self.team_num)
