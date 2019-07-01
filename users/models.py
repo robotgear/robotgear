@@ -3,9 +3,6 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
-# Create your models here.
-
-
 class Competition(models.Model):
     abbreviation = models.CharField(max_length=4)
     full_name = models.CharField(max_length=120)
@@ -47,6 +44,12 @@ class User(AbstractUser):
     teams = models.ManyToManyField(Team)
     zip_code = models.CharField(null=True, max_length=10)
     country = models.CharField(null=True, max_length=4)
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    link = models.URLField()
 
 
 class Event(models.Model):

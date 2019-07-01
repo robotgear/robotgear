@@ -28,6 +28,7 @@
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <a class="item" href="{% url 'logout' %}">Logout</a>
+                        <a class="item" href="{% url 'settings' %}">Settings</a>
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="divider"></div>

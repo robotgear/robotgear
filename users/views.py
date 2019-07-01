@@ -151,3 +151,10 @@ def resetLinkView(request, uidb64, token):
 	else:
 		messages.error(request, "An error occurred when trying to validate your email. ")
 		return render(request, 'reset.html')
+
+
+def settingsView(request):
+	if request.user.is_authenticated:
+		return render(request, 'settings.html')
+	else:
+		return redirect(loginView)

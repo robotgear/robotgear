@@ -1,0 +1,60 @@
+{% extends "static_header.html" %}
+{% load static %}
+{% block body %}
+    <script src="{% static 'jquery.address.js' %}"></script>
+    <script>
+    $(document)
+            .ready(function () {
+                $('.link.list .item')
+                    .tab({
+                        history: true,
+                        historyType: 'hash'
+                    })
+                ;
+            })
+    ;
+    </script>
+    <div class="ui stackable two column divided grid">
+        <div class="two wide column">
+            <div class="ui link list">
+                <a class="active item" data-tab="settings">Settings</a>
+                <a class="item" data-tab="teams">Teams</a>
+                <a class="item" data-tab="profile">Profile</a>
+            </div>
+        </div>
+        <div class="fourteen wide column">
+            <div class="ui active tab segment" data-tab="settings">
+                <h1>General Settings</h1>
+                <button class="fluid ui animated button">
+                    <div class="visible content">Change Password</div>
+                    <div class="hidden content">Make sure your email is set correctly.</div>
+                </button>
+                <div class="ui divider"></div>
+                <form class="ui form">
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Enter your email">
+                    </div>
+                    <div class="field">
+                        <input type="email" name="email" placeholder="Email, again, to confirm">
+                    </div>
+                    <button class="fluid ui button">
+                        Change Email
+                    </button>
+                </form>
+                <div class="ui divider"></div>
+                <form class="ui form">
+                    <div class="field">
+                        <label></label>
+                    </div>
+                </form>
+            </div>
+            <div class="ui tab segment" data-tab="teams">
+                <h1>Teams</h1>
+            </div>
+            <div class="ui tab segment" data-tab="profile">
+                <h1>Profile</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}
