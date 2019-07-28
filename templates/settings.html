@@ -3,40 +3,71 @@
 {% block body %}
     <script src="{% static 'jquery.address.js' %}"></script>
     <script>
-    $(document)
+        $(document)
             .ready(function () {
-                $('.link.list .item')
+                let tabs = $('.link.list .SettingsItem');
+                tabs
                     .tab({
                         history: true,
-                        historyType: 'hash'
+                        historyType: 'hash',
+                        path: '/settings/',
+                        debug: true
                     })
                 ;
+                $('#email_form')
+                    .form({
+                        fields: {
+                            email: {
+                                identifier: 'email',
+                                rules: [
+                                    {
+                                        type: 'email'
+                                    }
+                                ]
+                            },
+                            match: {
+                                identifier: 'email_check',
+                                rules: [
+                                    {
+                                        type: 'match[email]',
+                                        prompt: 'Both emails must match.'
+                                    }
+                                ]
+                            }
+                        },
+                        inline: true,
+                        on : 'blur'
+                    });
+                $('select.dropdown')
+                    .dropdown()
+                ;
             })
-    ;
+        ;
     </script>
     <div class="ui stackable two column divided grid">
         <div class="two wide column">
             <div class="ui link list">
-                <a class="active item" data-tab="settings">Settings</a>
-                <a class="item" data-tab="teams">Teams</a>
-                <a class="item" data-tab="profile">Profile</a>
+                <a class="item SettingsItem" data-tab="main">Settings</a>
+                <a class="item SettingsItem" data-tab="teams">Teams</a>
+                <a class="item SettingsItem" data-tab="profile">Profile</a>
             </div>
         </div>
         <div class="fourteen wide column">
-            <div class="ui active tab segment" data-tab="settings">
+            <div class="ui tab segment" data-tab="main">
                 <h1>General Settings</h1>
-                <button class="fluid ui animated button">
+                <a class="fluid ui animated button" href="{% url 'resetLoggedInLink' %}">
                     <div class="visible content">Change Password</div>
                     <div class="hidden content">Make sure your email is set correctly.</div>
-                </button>
+                </a>
                 <div class="ui divider"></div>
-                <form class="ui form">
+                <form method="POST" action="{% url 'resetEmail' %}" class="ui form" id="email_form">
+                    {% csrf_token %}
                     <div class="field">
                         <label>Email</label>
                         <input type="email" name="email" placeholder="Enter your email">
                     </div>
                     <div class="field">
-                        <input type="email" name="email" placeholder="Email, again, to confirm">
+                        <input type="email" name="email_check" placeholder="Email, again, to confirm">
                     </div>
                     <button class="fluid ui button">
                         Change Email
@@ -49,8 +80,82 @@
                     </div>
                 </form>
             </div>
-            <div class="ui tab segment" data-tab="teams">
-                <h1>Teams</h1>
+            <div class="ui tab segments" data-tab="teams">
+                <div class="ui segment">
+                    <h1>My Teams</h1>
+                    <div class="ui cards">
+                        {% for team in teams %}
+                        <div class="card">
+                            <div class="content">
+                                <div class="header">{{ team.team.competition.full_name }} Team {{ team.team.team_num }}</div>
+                                <div class="meta">
+                                    <span>{{ team.team.nickname }}</span>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                Relationship: {{ team.relationship }}
+                            </div>
+                            {% if team.team.added_manually %}
+                            <div class="ui three bottom attached buttons">
+                                    <a class="ui green button">Edit Relationship</a>
+                                    <a class="ui green button">Edit Team</a>
+                                    <a class="ui red button" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Remove</a>
+                            </div>
+
+                            {% else %}
+                            <div class="ui two bottom attached buttons">
+                                    <a class="ui green button">Edit</a>
+                                    <a class="ui red button" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Remove</a>
+                            </div>
+                            {% endif %}
+                            <div class="ui modal" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}modal">
+                                <div class="header">Are you sure you want to remove {{ team.team.competition.full_name }} Team {{ team.team.team_num }} from your profile?</div>
+                                <div class="actions">
+                                    <div class="ui cancel button">Cancel</div>
+                                    <a class="negative ui approve button" href="{% url 'deleteTeam' team.team.competition.abbreviation team.team.team_num%}">Remove</a>
+                                </div>
+                            </div>
+                            <script>
+                                $("#{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button").click(function(){
+                                    $("#{{ team.team.competition.abbreviation }}{{ team.team.team_num }}modal")
+                                        .modal('show')
+                                });
+                            </script>
+                        </div>
+                        {% empty %}
+                            <div class="card">
+                                <div class="content">No teams found. Add one below!</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <h1>Add a Team</h1>
+                    <form method="POST" action="{% url 'addTeam' %}" class="ui form" id="team_add_form">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label>Competition</label>
+                            <select name="competition" class="ui search selection dropdown">
+                                <option value="">Select Competition</option>
+                                {% for comp in competitions %}
+                                    <option value="{{ comp.abbreviation }}">{{ comp.full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Team Number</label>
+                            <input type="text" name="team_num">
+                        </div>
+                        <div class="field">
+                            <label>Team Relationship</label>
+                            <input type="text" placeholder="Mentor, Student, Alumni, etc" name="relationship">
+                        </div>
+                        <div class="ui tiny message">
+                            Don't see your robotics competition? <a href="{% url 'contact' %}">Contact Us</a> to add it.
+                        </div>
+                        <button class="ui button" type="submit">Add Team</button>
+                    </form>
+                </div>
             </div>
             <div class="ui tab segment" data-tab="profile">
                 <h1>Profile</h1>

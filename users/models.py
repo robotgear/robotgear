@@ -7,6 +7,7 @@ class Competition(models.Model):
     abbreviation = models.CharField(max_length=4)
     full_name = models.CharField(max_length=120)
     link = models.URLField()
+    auto_import = models.BooleanField(default=False)
 
     def __str__(self):
         return self.full_name
@@ -19,10 +20,12 @@ class Team(models.Model):
                                 null=True
                                 # set so database migrations won't complain, should never be truly null in the DB
                                 )  # set to CharField to support VEX
-    zip_code = models.CharField(null=True, max_length=20)
-    country = models.CharField(null=True, max_length=4)
+    zip_code = models.CharField(blank=True, max_length=20)
+    country = models.CharField(blank=True, max_length=4)
     lat = models.FloatField(null=True)
     long = models.FloatField(null=True)
+    last_year_competing = models.PositiveSmallIntegerField(null=True)
+    added_manually = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
@@ -41,9 +44,15 @@ class Team(models.Model):
 
 class User(AbstractUser):
     email_confirmed = models.BooleanField(default=False)
-    teams = models.ManyToManyField(Team)
-    zip_code = models.CharField(null=True, max_length=10)
-    country = models.CharField(null=True, max_length=4)
+    teams = models.ManyToManyField(Team, through='TeamMembership')
+    zip_code = models.CharField(max_length=10, blank=True)
+    country = models.CharField(max_length=4, blank=True)
+
+
+class TeamMembership(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    relationship = models.CharField(max_length=50)
 
 
 class Notification(models.Model):

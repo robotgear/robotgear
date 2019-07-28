@@ -26,6 +26,7 @@
     <script>
         $(document)
             .ready(function () {
+                $('.ui.checkbox').checkbox();
                 $('.ui.form')
                     .form({
                         fields: {
@@ -51,12 +52,21 @@
                                     }
                                 ]
                             },
-                            email:{
+                            email: {
                                 identifier: 'email',
                                 rules: [
                                     {
                                         type: 'email',
                                         prompt: 'Please enter a valid email.'
+                                    }
+                                ]
+                            },
+                            toc: {
+                                identifier: 'agreement',
+                                rules: [
+                                    {
+                                        type: 'checked',
+                                        prompt: 'Please agree to our Terms and Conditions.'
                                     }
                                 ]
                             }
@@ -83,9 +93,14 @@
                 <div class="field">
                     <label>Email</label>
                     <input id="email" type="email" class="required" name="email" placeholder="Email">
-                <button class="ui button" type="submit" name="action">Register
-                </button>
                 </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input id="agreement" type="checkbox">
+                        <label>I have read and agree to the <a href="{% url 'terms' %}">Terms and Conditions</a></label>
+                    </div>
+                </div>
+                <button class="ui button" type="submit" name="action">Register</button>
                 <div class="ui error message">
                     {% if messages %}
                         <ul class="list">

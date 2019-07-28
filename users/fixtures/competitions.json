@@ -5,7 +5,8 @@
     "fields": {
       "abbreviation": "FRC",
       "full_name": "FIRST Robotics Competition",
-      "link": ""
+      "link": "",
+      "auto_import": true
     }
   },
   {
@@ -14,7 +15,8 @@
     "fields": {
       "abbreviation": "FTC",
       "full_name": "FIRST Tech Challenge",
-      "link": ""
+      "link": "",
+      "auto_import": true
     }
   },
   {
@@ -23,7 +25,8 @@
     "fields": {
       "abbreviation": "FLL",
       "full_name": "FIRST LEGO League",
-      "link": ""
+      "link": "",
+      "auto_import": true
     }
   },
   {
@@ -32,7 +35,8 @@
     "fields": {
       "abbreviation": "JFLL",
       "full_name": "FIRST Lego League Jr.",
-      "link": ""
+      "link": "",
+      "auto_import": true
     }
   },
   {
@@ -41,7 +45,8 @@
     "fields": {
       "abbreviation": "VRC",
       "full_name": "VEX Robotics Competition",
-      "link": ""
+      "link": "",
+      "auto_import": false
     }
   },
   {
@@ -50,7 +55,8 @@
     "fields": {
       "abbreviation": "VIQ",
       "full_name": "VEX IQ Challenge",
-      "link": ""
+      "link": "",
+      "auto_import": false
     }
   },
   {
@@ -59,7 +65,8 @@
     "fields": {
       "abbreviation": "BEST",
       "full_name": "BEST Robotics Competition",
-      "link": ""
+      "link": "",
+      "auto_import": false
     }
   }
 ]
