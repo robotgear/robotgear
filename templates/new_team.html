@@ -1,9 +1,105 @@
 {% extends "static_header.html" %}
 {% load static %}
 {% block body %}
-<p>The team you're attempting to add in our database is from a competition that we don't automatically import and hasn't
-been added in the past. As a result, you're going to need to provide us with some info on the team. </p>
-    <form class="ui form">
+    <script>
+        $(document)
+            .ready(function () {
+                $('.ui.dropdown').dropdown();
+                $('.ui.form')
+                    .form({
+                        fields: {
+                            nickname: {
+                                identifier: 'nickname',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: "Please enter this team's nickname"
+                                    }
+                                ]
+                            },
+                            zip: {
+                                identifier: 'zip_code',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your zip code'
+                                    }
+                                ]
+                            },
+                            country: {
+                                identifier: 'country',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter a country code.'
+                                    },
+                                    {
+                                        type: 'exactLength[2]',
+                                        prompt: 'Please only use a 2 digit country code. '
+                                    }
+                                ]
+                            },
+                            year: {
+                                identifier: 'last_year',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter the last year competiting.'
+                                    }
+                                ]
+                            },
+                        }
+                    })
+                ;
+            })
+        ;
+    </script>
+<p>The team you're attempting to add in our database is either from a competition that we don't automatically import and
+    hasn't been added in the past or is from a team that's old enough to not be imported automatically. As a result,
+    you're going to need to provide us with some info on the team. </p>
+    <form class="ui form" action="{% url 'newTeam' %}" method="POST">
+        {% csrf_token %}
+        <div class="disabled field">
+            <label>Competition</label>
+            <input type="text" name="competition" readonly="" value="{{ competition }}">
+        </div>
+        <div class="field">
+            <label>Nickname</label>
+            <input type="text" name="nickname" placeholder="The Cheesy Poofs">
+        </div>
+        <div class="disabled field">
+            <label>Team Number</label>
+            <input type="text" name="team_num" readonly="" value="{{ team_num }}">
+        </div>
+        <div class="field">
+            <label>Zip Code</label>
+            <input type="text" name="zip_code" placeholder="95126">
+        </div>
+        <div class="field">
+            <label>Country (Two Letter Code)</label>
+            <input type="text" name="country" placeholder="US">
+        </div>
 
+        <div class="field">
+            <label>Last Year Competing</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="last_year">
+                <i class="dropdown icon"></i>
+                <div class="default text">1996</div>
+                <div class="menu">
+                    {% for year in years %}
+                        <div class="item" data-value="{{ year }}">{{ year }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="disabled field">
+            <label>Your Team Relationship</label>
+            <input type="text" name="relationship" readonly="" value="{{ relationship }}">
+        </div>
+
+        <div class="ui primary submit button">Submit</div>
+        <div class="ui error message"></div>
     </form>
 {% endblock %}

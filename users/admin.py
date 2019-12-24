@@ -65,8 +65,7 @@ class TeamAdmin(admin.ModelAdmin):
                     "profile_year"
                 ]
             }
-            # changed to https://es02.firstinspires.org/
-            url = "http://es01.usfirst.org/teams_v1/_search"
+            url = "https://es02.firstinspires.org/teams_v1/_search"
             print("Beginning FIRST Team Import")
             r = requests.request(method='get', url=url, data=json.dumps(data))
             print("Received FIRST Teams.")
@@ -133,7 +132,7 @@ class TeamAdmin(admin.ModelAdmin):
                 "profile_year"
             ]
         }
-        url = "http://es01.usfirst.org/teams_v1/_search"
+        url = "https://es02.firstinspires.org/teams_v1/_search"
         print("Beginning FIRST Team Import")
         r = requests.request(method='get', url=url, data=json.dumps(data))
         print("Received FIRST Teams.")

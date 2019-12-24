@@ -15,6 +15,7 @@ from django.views.generic.base import TemplateView
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from datetime import datetime
 
 
 # Create your views here.
@@ -115,6 +116,7 @@ def activate(request, uidb64, token):
         messages.error(request, "An error occurred when trying to validate your email. ")
         return render(request, 'index.html')
 
+
 def reactivate(request, username):
     user = User.objects.get(username=username)
     if user is not None:
@@ -132,6 +134,7 @@ def reactivate(request, username):
     else:
         messages.error(request, "No user with that username found.")
         return render(request, 'register.html')
+
 
 def resetView(request):
     if request.user.is_authenticated:
@@ -243,8 +246,10 @@ def addTeamView(request):
     try:
         team_obj = Team.objects.filter(competition__abbreviation=competition).get(team_num=team_num)
     except Team.DoesNotExist:
-        # TODO: manual team creation
-        return redirect(settingsView)
+        current_year = datetime.now().year
+        context = {'competition': competition, 'team_num': team_num, 'relationship': relationship,
+                   'years': list(range(current_year+1, 1980, -1))}
+        return render(request, 'new_team.html', context=context)
 
     membership = TeamMembership()
     membership.user = request.user
@@ -254,6 +259,33 @@ def addTeamView(request):
 
     return redirect(f'{reverse("settings")}#teams')
 
+
+@login_required
+@require_POST
+def newTeamView(request):
+    competition = request.POST.get('competition')
+    comp_obj = Competition.objects.get(abbreviation=competition)
+    team_num = request.POST.get('team_num')
+    nickname = request.POST.get('nickname')
+    zip_code = request.POST.get('zip_code')
+    country = request.POST.get('country')
+    last_year = request.POST.get('last_year')
+    team = Team.objects.create(competition=comp_obj,
+                               team_num=team_num,
+                               nickname=nickname,
+                               zip_code=zip_code,
+                               country=country,
+                               last_year_competing=last_year,
+                               added_manually=True)
+    team.save()
+
+    relationship = request.POST.get('relationship')
+    membership = TeamMembership()
+    membership.user = request.user
+    membership.team = team
+    membership.relationship = relationship
+    membership.save()
+    return redirect(f'{reverse("settings")}#teams')
 
 @login_required
 def deleteTeamView(request, comp, team):
