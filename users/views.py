@@ -36,6 +36,11 @@ def loginView(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            if not user.email_confirmed:
+                messages.error(request, 'Please confirm your email before logging in. You can resend the confirmation'
+                                        f' email <a href="{reverse("reactivate", kwargs={"username":username})}">here.</a>',
+                               extra_tags='safe')
+                return render(request, 'login.html')
             login(request, user)
             return redirect('index')
         else:
@@ -85,7 +90,7 @@ def registerView(request):
             })
             user.email_user(subject, message)
             messages.success(request, "Your account has been created. Please check your email.")
-            return redirect('index')
+            return redirect('login')
         else:
             messages.error(request, "An error has occurred, please try again.")
             return render(request, 'register.html')
@@ -104,13 +109,29 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.email_confirmed = True
         user.save()
-        login(request, user)
         messages.success(request, "Your account has been activated.")
-        return redirect('index')
+        return redirect('login')
     else:
         messages.error(request, "An error occurred when trying to validate your email. ")
         return render(request, 'index.html')
 
+def reactivate(request, username):
+    user = User.objects.get(username=username)
+    if user is not None:
+        current_site = get_current_site(request)
+        subject = 'Activate Your RobotGear Account'
+        message = render_to_string('email/activation_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': force_text(urlsafe_base64_encode(force_bytes(user.pk))),
+            'token': account_activation_token.make_token(user),
+        })
+        user.email_user(subject, message)
+        messages.success(request, "An activation email has been resent to your email on file.")
+        return redirect('login')
+    else:
+        messages.error(request, "No user with that username found.")
+        return render(request, 'register.html')
 
 def resetView(request):
     if request.user.is_authenticated:
@@ -153,6 +174,7 @@ def resetLinkView(request, uidb64, token):
                 messages.error(request, "Invalid password.")
                 return render(request, 'email/reset_pass_entry.html')
             user.set_password(password)
+            user.email_confirmed = True
             user.save()
             messages.success(request, "Password changed correctly.")
             return redirect('login')
@@ -235,6 +257,6 @@ def addTeamView(request):
 
 @login_required
 def deleteTeamView(request, comp, team):
-    membership = TeamMembership.objects.filter(team__competition__abbreviation=comp, team__team_num=team)
+    membership = TeamMembership.objects.get(team__competition__abbreviation=comp, team__team_num=team, user=request.user)
     membership.delete()
     return redirect(f'{reverse("settings")}#teams')

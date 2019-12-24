@@ -88,7 +88,7 @@
                         <ul class="list">
                             {% for message in messages %}
                                 <li>
-                                    {{ message }}
+                                    {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
