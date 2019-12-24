@@ -97,14 +97,14 @@
                             </div>
                             {% if team.team.added_manually %}
                             <div class="ui three bottom attached buttons">
-                                    <a class="ui green button">Edit Relationship</a>
+                                    <a class="ui green button" id="edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Edit</a>
                                     <a class="ui green button">Edit Team</a>
                                     <a class="ui red button" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Remove</a>
                             </div>
 
                             {% else %}
                             <div class="ui two bottom attached buttons">
-                                    <a class="ui green button">Edit</a>
+                                    <a class="ui green button" id="edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Edit</a>
                                     <a class="ui red button" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Remove</a>
                             </div>
                             {% endif %}
@@ -118,6 +118,27 @@
                             <script>
                                 $("#{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button").click(function(){
                                     $("#{{ team.team.competition.abbreviation }}{{ team.team.team_num }}modal")
+                                        .modal('show')
+                                });
+                            </script>
+
+                            <div class="ui modal" id="edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}modal">
+                                <div class="header">What is your current relationship with {{ team.team.competition.full_name }} Team {{ team.team.team_num }}?</div>
+                                <form class="ui form actions" method="POST" action="{% url 'editRelationship' %}">
+                                    {% csrf_token %}
+                                    <div class="field">
+                                        <label>Team Relationship</label>
+                                        <input type="text" placeholder="Mentor, Student, Alumni, etc" name="relationship">
+                                    </div>
+                                    <input type="hidden" name="competition" value="{{ team.team.competition.abbreviation }}">
+                                    <input type="hidden" name="team_num" value="{{ team.team.team_num }}">
+                                    <div class="ui cancel button">Cancel</div>
+                                    <button class="positive ui approve button" type="submit">Submit</button>
+                                </form>
+                            </div>
+                            <script>
+                                $("#edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button").click(function(){
+                                    $("#edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}modal")
                                         .modal('show')
                                 });
                             </script>

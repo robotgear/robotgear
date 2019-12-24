@@ -292,3 +292,16 @@ def deleteTeamView(request, comp, team):
     membership = TeamMembership.objects.get(team__competition__abbreviation=comp, team__team_num=team, user=request.user)
     membership.delete()
     return redirect(f'{reverse("settings")}#teams')
+
+@login_required
+@require_POST
+def editRelationshipView(request):
+    relationship = request.POST.get('relationship')
+    competition = request.POST.get('competition')
+    team_num = request.POST.get('team_num')
+
+    membership = TeamMembership.objects.get(team__competition__abbreviation=competition, team__team_num=team_num)
+    membership.relationship = relationship
+    membership.save()
+
+    return redirect(f'{reverse("settings")}#teams')

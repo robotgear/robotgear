@@ -17,5 +17,6 @@ urls = [
     path(r'settings/reset_email', views.changeEmailView, name='resetEmail'),
     path(r'settings/add_team', views.addTeamView, name='addTeam'),
     path(r'settings/new_team', views.newTeamView, name='newTeam'),
-    path(r'settings/delete_team/<str:comp>/<str:team>', views.deleteTeamView, name='deleteTeam')
+    path(r'settings/delete_team/<str:comp>/<str:team>', views.deleteTeamView, name='deleteTeam'),
+    path(r'settings/edit_relationship', views.editRelationshipView, name='editRelationship')
 ]
