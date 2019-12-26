@@ -54,6 +54,9 @@ class TeamMembership(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     relationship = models.CharField(max_length=50)
 
+    class Meta:
+        unique_together = ['user', 'team']
+
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -65,7 +65,7 @@
         </div>
         <div class="field">
             <label>Nickname</label>
-            <input type="text" name="nickname" placeholder="The Cheesy Poofs">
+            <input type="text" name="nickname" placeholder="The Cheesy Poofs" value="{{ nickname }}">
         </div>
         <div class="disabled field">
             <label>Team Number</label>
@@ -73,17 +73,17 @@
         </div>
         <div class="field">
             <label>Zip Code</label>
-            <input type="text" name="zip_code" placeholder="95126">
+            <input type="text" name="zip_code" placeholder="95126" value="{{ zip_code }}">
         </div>
         <div class="field">
             <label>Country (Two Letter Code)</label>
-            <input type="text" name="country" placeholder="US">
+            <input type="text" name="country" placeholder="US" value="{{ country }}">
         </div>
 
         <div class="field">
             <label>Last Year Competing</label>
-            <div class="ui selection dropdown">
-                <input type="hidden" name="last_year">
+            <div class="ui search selection dropdown">
+                <input type="hidden" name="last_year" value="{{ selected_year }}">
                 <i class="dropdown icon"></i>
                 <div class="default text">1996</div>
                 <div class="menu">
@@ -93,12 +93,12 @@
                 </div>
             </div>
         </div>
-
+        {% if not hide_relationship %}
         <div class="disabled field">
             <label>Your Team Relationship</label>
             <input type="text" name="relationship" readonly="" value="{{ relationship }}">
         </div>
-
+        {% endif %}
         <div class="ui primary submit button">Submit</div>
         <div class="ui error message"></div>
     </form>

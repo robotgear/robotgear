@@ -98,7 +98,7 @@
                             {% if team.team.added_manually %}
                             <div class="ui three bottom attached buttons">
                                     <a class="ui green button" id="edit{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Edit</a>
-                                    <a class="ui green button">Edit Team</a>
+                                    <a class="ui green button" href="{% url 'editTeam' team.team.competition.abbreviation team.team.team_num %}">Edit Team</a>
                                     <a class="ui red button" id="{{ team.team.competition.abbreviation }}{{ team.team.team_num }}button">Remove</a>
                             </div>
 
@@ -128,7 +128,7 @@
                                     {% csrf_token %}
                                     <div class="field">
                                         <label>Team Relationship</label>
-                                        <input type="text" placeholder="Mentor, Student, Alumni, etc" name="relationship">
+                                        <input type="text" placeholder="Mentor, Student, Alumni, etc" name="relationship" value="{{ team.relationship }}">
                                     </div>
                                     <input type="hidden" name="competition" value="{{ team.team.competition.abbreviation }}">
                                     <input type="hidden" name="team_num" value="{{ team.team.team_num }}">

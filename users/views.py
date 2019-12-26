@@ -189,7 +189,7 @@ def resetLinkView(request, uidb64, token):
 @login_required
 def settingsView(request):
     all_competitions = Competition.objects.all()
-    own_teams = TeamMembership.objects.filter(user=request.user)
+    own_teams = TeamMembership.objects.filter(user=request.user).order_by('team__competition__abbreviation','team__team_num')
     context = {'competitions': all_competitions, 'teams': own_teams}
     return render(request, 'settings.html', context=context)
 
@@ -248,14 +248,17 @@ def addTeamView(request):
     except Team.DoesNotExist:
         current_year = datetime.now().year
         context = {'competition': competition, 'team_num': team_num, 'relationship': relationship,
-                   'years': list(range(current_year+1, 1980, -1))}
+                   'years': list(range(current_year+1, 1980, -1)),'hide_relationship': False}
         return render(request, 'new_team.html', context=context)
 
     membership = TeamMembership()
     membership.user = request.user
     membership.team = team_obj
     membership.relationship = relationship
-    membership.save()
+    try:
+        membership.save()
+    except IntegrityError:
+        messages.error(request, "You are already associated with that team. Edit your relationship if you'd like to add more than one role.")
 
     return redirect(f'{reverse("settings")}#teams')
 
@@ -266,32 +269,44 @@ def newTeamView(request):
     competition = request.POST.get('competition')
     comp_obj = Competition.objects.get(abbreviation=competition)
     team_num = request.POST.get('team_num')
+
     nickname = request.POST.get('nickname')
     zip_code = request.POST.get('zip_code')
     country = request.POST.get('country')
     last_year = request.POST.get('last_year')
-    team = Team.objects.create(competition=comp_obj,
+    try:
+        team = Team.objects.create(competition=comp_obj,
                                team_num=team_num,
                                nickname=nickname,
                                zip_code=zip_code,
                                country=country,
                                last_year_competing=last_year,
                                added_manually=True)
+    except IntegrityError:
+        team = Team.objects.get(competition__abbreviation=competition,
+                                team_num=team_num)
+        team.nickname = nickname
+        team.zip_code = zip_code
+        team.country = country
+        team.last_year_competing = last_year
     team.save()
 
     relationship = request.POST.get('relationship')
-    membership = TeamMembership()
-    membership.user = request.user
-    membership.team = team
-    membership.relationship = relationship
-    membership.save()
+    if relationship != "" and relationship is not None:
+        membership = TeamMembership()
+        membership.user = request.user
+        membership.team = team
+        membership.relationship = relationship
+        membership.save()
     return redirect(f'{reverse("settings")}#teams')
+
 
 @login_required
 def deleteTeamView(request, comp, team):
     membership = TeamMembership.objects.get(team__competition__abbreviation=comp, team__team_num=team, user=request.user)
     membership.delete()
     return redirect(f'{reverse("settings")}#teams')
+
 
 @login_required
 @require_POST
@@ -305,3 +320,19 @@ def editRelationshipView(request):
     membership.save()
 
     return redirect(f'{reverse("settings")}#teams')
+
+@login_required
+def editTeamView(request, comp, team):
+    if request.method == "GET":
+        team = Team.objects.get(team_num=team, competition__abbreviation=comp)
+        current_year = datetime.now().year
+        context = {'competition': team.competition.abbreviation,
+                   'team_num': team.team_num,
+                   'relationship': "",
+                   'nickname': team.nickname,
+                   'zip_code': team.zip_code,
+                   'country': team.country,
+                   'selected_year': team.last_year_competing,
+                   'hide_relationship': True,
+                   'years': list(range(current_year+1, 1980, -1))}
+        return render(request, 'new_team.html', context=context)
