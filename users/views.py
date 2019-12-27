@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, password_validation
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDictKeyError
 from users.models import User, Competition, Team, TeamMembership
+from users.forms import UserDescriptionForm
 from django.contrib import messages
 from django.db import IntegrityError
 from django.utils.encoding import force_text, force_bytes
@@ -205,7 +206,8 @@ def changeUsernameView(request):
 def settingsView(request):
     all_competitions = Competition.objects.all()
     own_teams = TeamMembership.objects.filter(user=request.user).order_by('team__competition__abbreviation','team__team_num')
-    context = {'competitions': all_competitions, 'teams': own_teams}
+    desc_form = UserDescriptionForm(initial={'description': request.user.description})
+    context = {'competitions': all_competitions, 'teams': own_teams, 'desc_form': desc_form}
     return render(request, 'settings.html', context=context)
 
 
@@ -352,10 +354,24 @@ def editTeamView(request, comp, team):
                    'years': list(range(current_year+1, 1980, -1))}
         return render(request, 'new_team.html', context=context)
 
+
 def userDetail(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'user_detail.html', context={'user': user})
 
+
 def teamDetail(request, comp, team):
     team = get_object_or_404(Team, team_num=team, competition__abbreviation=comp)
     return render(request, 'team_detail.html', context={'team': team})
+
+
+@login_required
+@require_POST
+def updateDesc(request):
+    form = UserDescriptionForm(request.POST)
+
+    if form.is_valid():
+        request.user.description = form.cleaned_data['description']
+        request.user.save()
+        messages.success(request, "Your description has been updated.")
+        return redirect(f'{reverse("settings")}#profile')
