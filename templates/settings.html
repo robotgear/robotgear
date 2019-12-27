@@ -107,10 +107,23 @@
                     </button>
                 </form>
                 <div class="ui divider"></div>
-                <form class="ui form">
+                <form method="POST" action="{% url 'resetUsername' %}" class="ui form warning">
+                    {% csrf_token %}
                     <div class="field">
-                        <label></label>
+                        <label>Username</label>
+                        <input type="text" name="username" placeholder="Enter your new username">
                     </div>
+                    <div class="ui warning message">
+                        <div class="header">Warning!</div>
+                        <ul class="list">
+                            <li>All links on the site will automatically switch to your new username.</li>
+                            <li>Any bookmarked links will still reference your old username and will break.</li>
+                            <li>Your login will change to your new username. Make sure to update your password manager, if you have one.</li>
+                        </ul>
+                    </div>
+                    <button class="fluid ui button">
+                        Change Username
+                    </button>
                 </form>
             </div>
             <div class="ui tab segments" data-tab="teams">

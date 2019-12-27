@@ -15,6 +15,7 @@ urls = [
     path(r'settings/', views.settingsView, name='settings'),
     path(r'settings/reset_password', views.resetLoggedInView, name='resetLoggedInLink'),
     path(r'settings/reset_email', views.changeEmailView, name='resetEmail'),
+    path(r'settings/reset_username', views.changeUsernameView, name='resetUsername'),
     path(r'settings/add_team', views.addTeamView, name='addTeam'),
     path(r'settings/new_team', views.newTeamView, name='newTeam'),
     path(r'settings/delete_team/<str:comp>/<str:team>', views.deleteTeamView, name='deleteTeam'),

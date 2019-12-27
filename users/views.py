@@ -188,6 +188,20 @@ def resetLinkView(request, uidb64, token):
 
 
 @login_required
+@require_POST
+def changeUsernameView(request):
+    try:
+        username = request.POST.get('username')
+        username = request.user.normalize_username(username)
+        request.user.username = username
+        request.user.save()
+        messages.success(request, 'Successfully updated your username.')
+    except IntegrityError:
+        messages.error(request, "That username is taken.")
+    return redirect('settings')
+
+
+@login_required
 def settingsView(request):
     all_competitions = Competition.objects.all()
     own_teams = TeamMembership.objects.filter(user=request.user).order_by('team__competition__abbreviation','team__team_num')
