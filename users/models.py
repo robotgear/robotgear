@@ -44,9 +44,10 @@ class Team(models.Model):
 
 class User(AbstractUser):
     email_confirmed = models.BooleanField(default=False)
-    teams = models.ManyToManyField(Team, through='TeamMembership')
+    teams = models.ManyToManyField(Team, through='TeamMembership', related_name='users')
     zip_code = models.CharField(max_length=10, blank=True)
     country = models.CharField(max_length=4, blank=True)
+    description = models.CharField(max_length=400, blank=True)
 
 
 class TeamMembership(models.Model):
@@ -56,6 +57,7 @@ class TeamMembership(models.Model):
 
     class Meta:
         unique_together = ['user', 'team']
+        ordering = ['team__competition__abbreviation', 'team__team_num']
 
 
 class Notification(models.Model):

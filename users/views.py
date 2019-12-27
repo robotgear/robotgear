@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, password_validation
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDictKeyError
@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from datetime import datetime
+from django.views.generic import DetailView
 
 
 # Create your views here.
@@ -336,3 +337,11 @@ def editTeamView(request, comp, team):
                    'hide_relationship': True,
                    'years': list(range(current_year+1, 1980, -1))}
         return render(request, 'new_team.html', context=context)
+
+def userDetail(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'user_detail.html', context={'user': user})
+
+def teamDetail(request, comp, team):
+    team = get_object_or_404(Team, team_num=team, competition__abbreviation=comp)
+    return render(request, 'team_detail.html', context={'team': team})

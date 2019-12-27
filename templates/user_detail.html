@@ -1,0 +1,38 @@
+{% extends "static_header.html" %}
+{% load app_tags %}
+{% load humanize %}
+{% block body %}
+    <div class="ui stackable two column grid">
+        <div class="four wide column">
+            <div class="ui card">
+                <div class="image">
+                    <img src="{{ user|gravatar:"300" }}">
+                </div>
+                <div class="content">
+                    <div class="header">{{ user.username }}</div>
+                    <div class="meta">
+                        <span class="date">Joined in {{ user.date_joined|date:"Y" }}</span>
+                    </div>
+                    <div class="meta">
+                        <span class="date">Last seen {{ user.last_login|naturaltime}}</span>
+                    </div>
+                    <div class="description">
+                        {{user.description}}
+                    </div>
+                </div>
+                {% for membership in user.teammembership_set.all %}
+                <a href="{% url 'teamDetail' membership.team.competition.abbreviation membership.team.team_num %}" class="extra content">
+                        <div class="header">{{ membership.team.nickname }}</div>
+                        <div class="meta">
+                          <span>{{ membership.team.competition.full_name }} {{ membership.team.team_num }}</span>
+                          <br><span>{{ membership.relationship }}</span>
+                        </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="twelve wide column">
+
+        </div>
+    </div>
+{% endblock %}

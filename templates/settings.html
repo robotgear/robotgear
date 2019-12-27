@@ -38,6 +38,39 @@
                         inline: true,
                         on : 'blur'
                     });
+                $('#team_add_form')
+                    .form({
+                        fields: {
+                            comp: {
+                                identifier: 'competition',
+                                rules: [
+                                    {
+                                        type: 'empty'
+                                    }
+                                ]
+                            },
+                            team_num: {
+                                identifier: 'team_num',
+                                rules: [
+                                    {
+                                        type: 'empty'
+                                    }
+                                ]
+                            },
+                            relationship: {
+                                identifier: 'relationship',
+                                rules: [
+                                    {
+                                        type: 'empty'
+                                    }
+                                ]
+                            }
+                        },
+                        inline: true,
+                        on : 'blur'
+                        }
+
+                    )
                 $('select.dropdown')
                     .dropdown()
                 ;

@@ -29,6 +29,7 @@
                     <div class="menu">
                         <a class="item" href="{% url 'logout' %}">Logout</a>
                         <a class="item" href="{% url 'settings' %}">Settings</a>
+                        <a class="item" href="{% url 'userDetail' user %}">My Profile</a>
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="divider"></div>

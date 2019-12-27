@@ -1,4 +1,4 @@
-from users import views
+from users import views, models
 from django.urls import path
 
 urls = [
@@ -19,5 +19,7 @@ urls = [
     path(r'settings/new_team', views.newTeamView, name='newTeam'),
     path(r'settings/delete_team/<str:comp>/<str:team>', views.deleteTeamView, name='deleteTeam'),
     path(r'settings/edit_relationship', views.editRelationshipView, name='editRelationship'),
-    path(r'settings/edit_team/<str:comp>/<str:team>', views.editTeamView, name='editTeam')
+    path(r'settings/edit_team/<str:comp>/<str:team>', views.editTeamView, name='editTeam'),
+    path(r'users/<str:username>', views.userDetail, name='userDetail'),
+    path(r'teams/<str:comp>/<str:team>', views.teamDetail, name='teamDetail')
 ]
