@@ -361,7 +361,7 @@ def editTeamView(request, comp, team):
 
 def userDetail(request, username):
     user = get_object_or_404(User, username=username)
-    return render(request, 'user_detail.html', context={'user': user})
+    return render(request, 'user_detail.html', context={'user_profile': user})
 
 
 def teamDetail(request, comp, team):

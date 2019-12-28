@@ -25,6 +25,9 @@
                         </div>
                 </a>
                 {% endfor %}
+                {% if perms.users.edit_team %}
+                    <a class="ui button" href="{%  url 'admin:users_team_change' team.pk %}">Edit Team</a>
+                {% endif %}
             </div>
         </div>
         <div class="twelve wide column">
