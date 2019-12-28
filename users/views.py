@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout, password_validation
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDictKeyError
 from users.models import User, Competition, Team, TeamMembership
-from users.forms import UserDescriptionForm
+from users.forms import UserDescriptionForm, UserAvatarForm
 from django.contrib import messages
 from django.db import IntegrityError
 from django.utils.encoding import force_text, force_bytes
@@ -207,7 +207,11 @@ def settingsView(request):
     all_competitions = Competition.objects.all()
     own_teams = TeamMembership.objects.filter(user=request.user).order_by('team__competition__abbreviation','team__team_num')
     desc_form = UserDescriptionForm(initial={'description': request.user.description})
-    context = {'competitions': all_competitions, 'teams': own_teams, 'desc_form': desc_form}
+    avatar_form = UserAvatarForm()
+    context = {'competitions': all_competitions,
+               'teams': own_teams,
+               'desc_form': desc_form,
+               'avatar_form':avatar_form}
     return render(request, 'settings.html', context=context)
 
 
@@ -374,4 +378,19 @@ def updateDesc(request):
         request.user.description = form.cleaned_data['description']
         request.user.save()
         messages.success(request, "Your description has been updated.")
+        return redirect(f'{reverse("settings")}#profile')
+
+
+@login_required
+@require_POST
+def uploadAvatar(request):
+    form = UserAvatarForm(request.POST, request.FILES)
+    if form.is_valid():
+        user = request.user
+        user.avatar = request.FILES['avatar']
+        user.save()
+        messages.success(request, "Your avatar has been updated.")
+        return redirect(f'{reverse("settings")}#profile')
+    else:
+        messages.error(request, "Error uploading avatar.")
         return redirect(f'{reverse("settings")}#profile')

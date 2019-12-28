@@ -17,7 +17,8 @@ class MembershipInline(admin.TabularInline):
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (('Custom Entries', {'fields': ('email_confirmed', 'zip_code', 'country', 'description')}),)
+    fieldsets = UserAdmin.fieldsets + (('Custom Entries', {'fields': ('email_confirmed', 'zip_code', 'country',
+                                                                      'description', 'avatar')}),)
     inlines = [MembershipInline]
     exclude = ('teams',)
 

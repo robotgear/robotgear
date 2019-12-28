@@ -133,12 +133,12 @@
                     <div class="ui cards">
                         {% for team in teams %}
                         <div class="card">
-                            <div class="content">
+                            <a href="{% url 'teamDetail' team.team.competition.abbreviation team.team.team_num %}" class="content">
                                 <div class="header">{{ team.team.competition.full_name }} Team {{ team.team.team_num }}</div>
                                 <div class="meta">
                                     <span>{{ team.team.nickname }}</span>
                                 </div>
-                            </div>
+                            </a>
                             <div class="extra content">
                                 Relationship: {{ team.relationship }}
                             </div>
@@ -191,8 +191,11 @@
                             </script>
                         </div>
                         {% empty %}
-                            <div class="card">
-                                <div class="content">No teams found. Add one below!</div>
+                            <div class="ui placeholder segment">
+                                <div class="ui icon header">
+                                    <i class="dont icon"></i>
+                                    No teams have been added yet. Add one below.
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
@@ -227,7 +230,12 @@
             </div>
             <div class="ui tab segment" data-tab="profile">
                 <h1>Profile</h1>
-                <p>Your avatar is automatically generated from your <a href="https://en.gravatar.com/">Gravatar</a>. Go to the linked site to change your avatar.</p>
+                <form class="ui form" enctype="multipart/form-data" action="{% url 'updateAvatar' %}" method="POST">
+                    {% csrf_token %}
+                    {% render_form avatar_form %}
+                    <input type="submit" class="ui button" value="Submit">
+                </form>
+                <div class="ui divider"></div>
                 <form class="ui form" action="{% url 'updateDesc' %}" method="POST">
                     {% csrf_token %}
                     {% render_form desc_form %}

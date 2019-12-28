@@ -22,6 +22,7 @@ urls = [
     path(r'settings/edit_relationship', views.editRelationshipView, name='editRelationship'),
     path(r'settings/edit_team/<str:comp>/<str:team>', views.editTeamView, name='editTeam'),
     path(r'settings/edit_desc',views.updateDesc, name='updateDesc'),
+    path(r'settings/edit_avatar',views.uploadAvatar, name='updateAvatar'),
     path(r'users/<str:username>', views.userDetail, name='userDetail'),
     path(r'teams/<str:comp>/<str:team>', views.teamDetail, name='teamDetail')
 ]
