@@ -1,5 +1,5 @@
 # Dev environment uploads
-mediafiles/
+/mediafiles/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -194,3 +194,4 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
