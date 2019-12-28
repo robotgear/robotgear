@@ -5,9 +5,11 @@
     <div class="ui stackable two column grid">
         <div class="four wide column">
             <div class="ui card">
+                {% if user.avatar %}
                 <div class="image">
                     <img src="{{ user.avatar.url }}">
                 </div>
+                {% endif %}
                 <div class="content">
                     <div class="header">{{ user.username }}</div>
                     <div class="meta">

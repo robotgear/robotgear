@@ -21,7 +21,11 @@
         </a>
         <div class="right menu">
             {% if user.is_authenticated %}
-                <div class="ui simple dropdown item">{{ user.username }}
+                <div class="ui simple dropdown item">
+                    {% if user.avatar %}
+                    <img class="ui avatar image" src="{{ user.avatar.url }}">
+                    {% endif %}
+                    {{ user.username }}
                     {% if messages %}
                         <div class="ui red label">{{ messages|length }}</div>
                     {% endif %}
