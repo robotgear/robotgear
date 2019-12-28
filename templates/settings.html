@@ -6,7 +6,7 @@
     <script>
         $(document)
             .ready(function () {
-                let tabs = $('.link.list .SettingsItem');
+                let tabs = $('.vertical.menu .SettingsItem');
                 tabs
                     .tab({
                         history: true,
@@ -80,7 +80,7 @@
     </script>
     <div class="ui stackable two column divided grid">
         <div class="two wide column">
-            <div class="ui link list">
+            <div class="ui fluid secondary vertical menu">
                 <a class="item SettingsItem" data-tab="main">Settings</a>
                 <a class="item SettingsItem" data-tab="teams">Teams</a>
                 <a class="item SettingsItem" data-tab="profile">Profile</a>
@@ -130,9 +130,9 @@
             <div class="ui tab segments" data-tab="teams">
                 <div class="ui segment">
                     <h1>My Teams</h1>
-                    <div class="ui cards">
+                    <div class="ui three stackable cards">
                         {% for team in teams %}
-                        <div class="card">
+                        <div class="fluid card">
                             <a href="{% url 'teamDetail' team.team.competition.abbreviation team.team.team_num %}" class="content">
                                 <div class="header">{{ team.team.competition.full_name }} Team {{ team.team.team_num }}</div>
                                 <div class="meta">
