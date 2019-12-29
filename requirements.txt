@@ -1,6 +1,6 @@
-django
-django-debug-toolbar
-Pillow
-psycopg2
-celery
-requests
+django==3.0.1
+django-debug-toolbar==2.1
+django-semanticui-forms==1.6.5
+Pillow==6.2.1
+psycopg2==2.8.4
+requests==2.22.0

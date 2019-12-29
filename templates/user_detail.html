@@ -15,7 +15,7 @@
                         <span class="date">Joined in {{ user_profile.date_joined|date:"Y" }}</span>
                     </div>
                     <div class="meta">
-                        <span class="date">Last seen {{ user_profile.last_login|naturaltime}}</span>
+                        <span class="date">Last seen {{ user_profile.last_login|naturalday}}</span>
                     </div>
                     <div class="description">
                         {{user_profile.description}}
@@ -31,7 +31,7 @@
                 </a>
                 {% endfor %}
                 {% if perms.users.edit_user %}
-                    <a class="ui button" href="{%  url 'admin:users_user_change' user.pk %}">Edit User</a>
+                    <a class="ui button" href="{%  url 'admin:users_user_change' user_profile.pk %}">Edit User</a>
                 {% endif %}
                 {% if request.user == user_profile %}
                     <a class="ui button" href="{%  url 'settings' %}#/profile">Edit Profile</a>
