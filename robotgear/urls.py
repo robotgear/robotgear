@@ -19,10 +19,16 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from users.urls import urls as users_urls
+from teams.urls import urls as teams_urls
+from robotgear.views import IndexView, TermsAndConditions
 
 urlpatterns = [
+    path(r'', IndexView.as_view(), name='index'),
+    path(r'terms/', TermsAndConditions.as_view(), name='terms'),
+    path(r'contact/', TermsAndConditions.as_view(), name='contact'),
     path(r'admin/', admin.site.urls),
-    path(r'', include(users_urls)),
+    path(r'user/', include(users_urls)),
+    path(r'teams/', include(teams_urls))
 ]
 
 if settings.DEBUG :

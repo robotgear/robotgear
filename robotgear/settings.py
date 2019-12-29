@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'semanticuiforms',
     'users',
+    'teams',
     'debug_toolbar'
 ]
 

@@ -1,6 +1,6 @@
 [
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 0,
     "fields": {
       "abbreviation": "FRC",
@@ -10,7 +10,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 1,
     "fields": {
       "abbreviation": "FTC",
@@ -20,7 +20,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 2,
     "fields": {
       "abbreviation": "FLL",
@@ -30,7 +30,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 3,
     "fields": {
       "abbreviation": "JFLL",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 4,
     "fields": {
       "abbreviation": "VRC",
@@ -50,7 +50,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 5,
     "fields": {
       "abbreviation": "VIQ",
@@ -60,7 +60,7 @@
     }
   },
   {
-    "model": "users.Competition",
+    "model": "teams.Competition",
     "pk": 6,
     "fields": {
       "abbreviation": "BEST",
