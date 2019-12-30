@@ -2,28 +2,24 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, password_validation
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDictKeyError
-from users.models import User,  TeamMembership
-from teams.models import Competition, Team
-from users.forms import UserDescriptionForm, UserAvatarForm
 from django.contrib import messages
 from django.db import IntegrityError
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from users.tokens import account_activation_token
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from datetime import datetime
-from django.views.generic import DetailView
+
+from users.models import User,  TeamMembership
+from teams.models import Competition
+from users.forms import UserDescriptionForm, UserAvatarForm
+from users.tokens import account_activation_token
 
 
-# Create your views here.
-
-def loginView(request):
+def login_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == "POST":
@@ -33,7 +29,8 @@ def loginView(request):
         if user is not None:
             if not user.email_confirmed:
                 messages.error(request, 'Please confirm your email before logging in. You can resend the confirmation'
-                                        f' email <a href="{reverse("reactivate", kwargs={"username":username})}">here.</a>',
+                                        f' email <a href="{reverse("reactivate", kwargs={"username":username})}">here.'
+                                        f'</a>',
                                extra_tags='safe')
                 return render(request, 'login.html')
             login(request, user)
@@ -45,15 +42,15 @@ def loginView(request):
         return render(request, 'login.html')
 
 
-def logoutView(request):
+def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('index')
     else:
-        return redirect(loginView)
+        return redirect(login_view)
 
 
-def registerView(request):
+def register_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == "POST":
@@ -75,15 +72,7 @@ def registerView(request):
             return render(request, 'register.html')
 
         if user is not None:
-            current_site = get_current_site(request)
-            subject = 'Activate Your RobotGear Account'
-            message = render_to_string('email/activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': force_text(urlsafe_base64_encode(force_bytes(user.pk))),
-                'token': account_activation_token.make_token(user),
-            })
-            user.email_user(subject, message)
+            send_activation_email(request, user)
             messages.success(request, "Your account has been created. Please check your email.")
             return redirect('login')
         else:
@@ -93,7 +82,19 @@ def registerView(request):
         return render(request, 'register.html')
 
 
-def activate(request, uidb64, token):
+def send_activation_email(request, user):
+    current_site = get_current_site(request)
+    subject = 'Activate Your RobotGear Account'
+    message = render_to_string('email/activation_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': force_text(urlsafe_base64_encode(force_bytes(user.pk))),
+        'token': account_activation_token.make_token(user),
+    })
+    user.email_user(subject, message)
+
+
+def activate_view(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -111,18 +112,10 @@ def activate(request, uidb64, token):
         return render(request, 'index.html')
 
 
-def reactivate(request, username):
+def reactivate_view(request, username):
     user = User.objects.get(username=username)
     if user is not None:
-        current_site = get_current_site(request)
-        subject = 'Activate Your RobotGear Account'
-        message = render_to_string('email/activation_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': force_text(urlsafe_base64_encode(force_bytes(user.pk))),
-            'token': account_activation_token.make_token(user),
-        })
-        user.email_user(subject, message)
+        send_activation_email(request, user)
         messages.success(request, "An activation email has been resent to your email on file.")
         return redirect('login')
     else:
@@ -130,7 +123,7 @@ def reactivate(request, username):
         return render(request, 'register.html')
 
 
-def resetView(request):
+def reset_view(request):
     if request.user.is_authenticated:
         return redirect(request, 'index')
     if request.method == "GET":
@@ -154,7 +147,7 @@ def resetView(request):
     return render(request, 'reset.html')
 
 
-def resetLinkView(request, uidb64, token):
+def reset_link_view(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -182,7 +175,7 @@ def resetLinkView(request, uidb64, token):
 
 @login_required
 @require_POST
-def changeUsernameView(request):
+def change_username_view(request):
     try:
         username = request.POST.get('username')
         username = request.user.normalize_username(username)
@@ -195,19 +188,20 @@ def changeUsernameView(request):
 
 
 @login_required
-def settingsView(request):
+def settings_view(request):
     all_competitions = Competition.objects.all()
-    own_teams = TeamMembership.objects.filter(user=request.user).order_by('team__competition__abbreviation','team__team_num')
+    own_teams = TeamMembership.objects.filter(user=request.user)\
+        .order_by('team__competition__abbreviation', 'team__team_num')
     desc_form = UserDescriptionForm(initial={'description': request.user.description})
     avatar_form = UserAvatarForm()
     context = {'competitions': all_competitions,
                'teams': own_teams,
                'desc_form': desc_form,
-               'avatar_form':avatar_form}
+               'avatar_form': avatar_form}
     return render(request, 'settings.html', context=context)
 
 
-def resetLoggedInView(request):
+def reset_logged_in_view(request):
     if request.user.is_authenticated:
         current_site = get_current_site(request)
         subject = 'Reset Your RobotGear Password'
@@ -221,10 +215,10 @@ def resetLoggedInView(request):
         messages.success(request, "A link has been sent to you. Please check your email.")
         return redirect('settings')
     else:
-        return redirect(loginView)
+        return redirect(login_view)
 
 
-def changeEmailView(request):
+def change_email_view(request):
     if request.user.is_authenticated:
         if request.method != "POST":
             return redirect('settings')
@@ -247,15 +241,12 @@ def changeEmailView(request):
         messages.success(request, "Your account has been created. Please check your email.")
         return redirect('settings')
     else:
-        return redirect(loginView)
-
-
-
+        return redirect(login_view)
 
 
 @login_required
 @require_POST
-def editRelationshipView(request):
+def edit_relationship_view(request):
     relationship = request.POST.get('relationship')
     competition = request.POST.get('competition')
     team_num = request.POST.get('team_num')
@@ -267,14 +258,14 @@ def editRelationshipView(request):
     return redirect(f'{reverse("settings")}#teams')
 
 
-def userDetail(request, username):
+def user_detail(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'user_detail.html', context={'user_profile': user})
 
 
 @login_required
 @require_POST
-def updateDesc(request):
+def update_desc(request):
     form = UserDescriptionForm(request.POST)
 
     if form.is_valid():
@@ -286,7 +277,7 @@ def updateDesc(request):
 
 @login_required
 @require_POST
-def uploadAvatar(request):
+def upload_avatar(request):
     form = UserAvatarForm(request.POST, request.FILES)
     if form.is_valid():
         user = request.user

@@ -81,11 +81,11 @@ class TeamAdmin(admin.ModelAdmin):
                 if created:
                     added += 1
             self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
-            return redirect("admin:users_team_changelist")
+            return redirect("admin:teams_team_changelist")
         else:
             updated, added = self.update_FIRST_teams(comp, 2019)
             self.message_user(request, "Updated {} teams, added {} teams.".format(updated, added))
-            return redirect("admin:users_team_changelist")
+            return redirect("admin:teams_team_changelist")
 
     def update_FIRST_teams(self, comp, year, current=False):
         data = {
