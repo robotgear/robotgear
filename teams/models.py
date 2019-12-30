@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 
 class Competition(models.Model):
@@ -6,6 +7,8 @@ class Competition(models.Model):
     full_name = models.CharField(max_length=120)
     link = models.URLField()
     auto_import = models.BooleanField(default=False)
+    first_year = models.IntegerField(default=1992)
+    last_year = models.IntegerField(default=datetime.now().year)
 
     def __str__(self):
         return self.full_name

@@ -22,7 +22,8 @@ def add_team_view(request):
     except Team.DoesNotExist:
         current_year = datetime.now().year
         context = {'competition': competition, 'team_num': team_num, 'relationship': relationship,
-                   'years': list(range(current_year+1, 1980, -1)), 'hide_relationship': False}
+                   'years': list(range(competition.last_year, competition.first_year, -1)),
+                   'hide_relationship': False}
         return render(request, 'new_team.html', context=context)
 
     membership = TeamMembership()
@@ -98,7 +99,7 @@ def edit_team_view(request, comp, team):
                    'country': team.country,
                    'selected_year': team.last_year_competing,
                    'hide_relationship': True,
-                   'years': list(range(current_year+1, 1980, -1))}
+                   'years': list(range(team.competition.last_year, team.competition.first_year, -1))}
         return render(request, 'new_team.html', context=context)
 
 
