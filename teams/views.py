@@ -20,7 +20,6 @@ def add_team_view(request):
     try:
         team_obj = Team.objects.filter(competition__abbreviation=competition).get(team_num=team_num)
     except Team.DoesNotExist:
-        current_year = datetime.now().year
         context = {'competition': competition, 'team_num': team_num, 'relationship': relationship,
                    'years': list(range(competition.last_year, competition.first_year, -1)),
                    'hide_relationship': False}
@@ -90,7 +89,6 @@ def delete_team_view(request, comp, team):
 def edit_team_view(request, comp, team):
     if request.method == "GET":
         team = Team.objects.get(team_num=team, competition__abbreviation=comp)
-        current_year = datetime.now().year
         context = {'competition': team.competition.abbreviation,
                    'team_num': team.team_num,
                    'relationship': "",
