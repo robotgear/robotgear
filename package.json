@@ -1,0 +1,22 @@
+{
+  "name": "robotgear",
+  "version": "1.0.0",
+  "description": "Trading, selling and buying for the specific uses of FIRST and VEX robotics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robotgear/robotgear.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robotgear/robotgear/issues"
+  },
+  "homepage": "https://github.com/robotgear/robotgear#readme",
+  "dependencies": {
+    "fomantic-ui": "^2.8.3"
+  }
+}
