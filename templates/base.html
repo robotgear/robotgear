@@ -25,19 +25,32 @@
 
 {% block message_modal %}
     {% if messages %}
-        <div class="ui modal">
-            {% for message in messages %}
-                <div class="header">{{ message}}</div>
-                <div class="actions">
-                    <div class="ui approve button">Dismiss</div>
-                </div>
-            {% endfor %}
-        </div>
+{#        <div class="ui modal">#}
+{#            {% for message in messages %}#}
+{#                <div class="header">{{ message}}</div>#}
+{#                <div class="actions">#}
+{#                    <div class="ui approve button">Dismiss</div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#        <script>#}
+{#        $(document)#}
+{#            .ready(function () {#}
+{#                $('.ui.modal').modal('show');#}
+{#            } );#}
+{#        </script>#}
         <script>
-        $(document)
-            .ready(function () {
-                $('.ui.modal').modal('show');
-            } );
+            $(document)
+                .ready(function () {
+                    {% for message in messages %}
+                    $('.main.container')
+                        .toast({
+                            class: '{{ message.level_tag }}',
+                            message: '{{ message }}'
+                        });
+                    {% endfor %}
+                    }
+                );
         </script>
     {% endif %}
 {% endblock %}
