@@ -26,23 +26,11 @@
                     <img class="ui avatar image" src="{{ user.avatar.url }}">
                     {% endif %}
                     {{ user.username }}
-                    {% if messages %}
-                        <div class="ui red label">{{ messages|length }}</div>
-                    {% endif %}
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <a class="item" href="{% url 'logout' %}">Logout</a>
                         <a class="item" href="{% url 'settings' %}">Settings</a>
                         <a class="item" href="{% url 'userDetail' user %}">My Profile</a>
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="divider"></div>
-                                <a class="item">{{ message }}</a>
-                                <div class="divider"></div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="item">No current messages.</div>
-                        {% endif %}
                     </div>
                 </div>
             {% else %}

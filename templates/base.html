@@ -18,8 +18,29 @@
 </head>
 
 
+
+
 <body>
 {%  block navbar %} {%  endblock %}
+
+{% block message_modal %}
+    {% if messages %}
+        <div class="ui modal">
+            {% for message in messages %}
+                <div class="header">{{ message}}</div>
+                <div class="actions">
+                    <div class="ui approve button">Dismiss</div>
+                </div>
+            {% endfor %}
+        </div>
+        <script>
+        $(document)
+            .ready(function () {
+                $('.ui.modal').modal('show');
+            } );
+        </script>
+    {% endif %}
+{% endblock %}
 
 <div class="ui main container">
 {% block body %} {% endblock %}
@@ -32,6 +53,9 @@
         <a class="item" href="{% url 'contact' %}">Contact Us</a>
         <a class="item" href="{% url 'terms' %}">Terms and Conditions</a>
         <a class="item" href="#">Privacy Policy</a>
+          {% if user.is_staff %}
+              <a class="item" href="{% url 'admin:index' %}">Admin Dashboard</a>
+          {% endif %}
       </div>
     </div>
   </div>
