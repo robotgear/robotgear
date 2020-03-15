@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users.urls import urls as users_urls
 from teams.urls import urls as teams_urls
+from posts.urls import urls as posts_urls
 from robotgear.views import IndexView, TermsAndConditions
 
 urlpatterns = [
@@ -28,7 +29,8 @@ urlpatterns = [
     path(r'contact/', TermsAndConditions.as_view(), name='contact'),
     path(r'admin/', admin.site.urls),
     path(r'user/', include(users_urls)),
-    path(r'teams/', include(teams_urls))
+    path(r'teams/', include(teams_urls)),
+    path(r'posts/', include(posts_urls))
 ]
 
 if settings.DEBUG :

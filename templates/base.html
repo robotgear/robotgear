@@ -7,7 +7,7 @@
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
-    <script src="/static/semantic.min.js"></script>
+    <script src="{%  static 'semantic.js' %}"></script>
     <title>{% block title %}RobotGear.trade{% endblock %}</title>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,22 +23,8 @@
 <body>
 {%  block navbar %} {%  endblock %}
 
-{% block message_modal %}
+{% block message_toast %}
     {% if messages %}
-{#        <div class="ui modal">#}
-{#            {% for message in messages %}#}
-{#                <div class="header">{{ message}}</div>#}
-{#                <div class="actions">#}
-{#                    <div class="ui approve button">Dismiss</div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        <script>#}
-{#        $(document)#}
-{#            .ready(function () {#}
-{#                $('.ui.modal').modal('show');#}
-{#            } );#}
-{#        </script>#}
         <script>
             $(document)
                 .ready(function () {
@@ -71,7 +57,6 @@
           {% endif %}
       </div>
     </div>
-  </div>
 </div>
 </body>
 </html>

@@ -130,6 +130,7 @@
             <div class="ui tab segments" data-tab="teams">
                 <div class="ui segment">
                     <h1>My Teams</h1>
+                    {% if teams %}
                     <div class="ui three stackable cards">
                         {% for team in teams %}
                         <div class="fluid card">
@@ -190,15 +191,16 @@
                                 });
                             </script>
                         </div>
-                        {% empty %}
-                            <div class="ui placeholder segment">
-                                <div class="ui icon header">
-                                    <i class="dont icon"></i>
-                                    No teams have been added yet. Add one below.
-                                </div>
-                            </div>
                         {% endfor %}
                     </div>
+                    {% else %}
+                        <div class="ui placeholder segment">
+                            <div class="ui icon header">
+                                <i class="dont icon"></i>
+                                No teams have been added yet. Add one below.
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="ui segment">
                     <h1>Add a Team</h1>

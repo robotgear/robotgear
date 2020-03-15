@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'semanticuiforms',
     'users',
     'teams',
+    'posts',
     'debug_toolbar'
 ]
 

@@ -62916,11 +62916,12 @@ a.ui.nag {
   background-clip: unset;
 }
 
-.ui.pink.rating .icon.partial.active {
+ /*noinspection ALL*/
+ .ui.pink.rating .icon.partial.active {
   background: -webkit-gradient(linear, left top, right top, from(#FF8EDF), to(rgba(0, 0, 0, 0.15)));
   background: -webkit-linear-gradient(left, #FF8EDF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
-  background: linear-gradient(to right, #FF8EDF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
-  text-shadow: none;
+     background-image: linear-gradient(to right, #FF8EDF 0% var(--full), rgba(0, 0, 0, 0.15) var(--full) 100%);
+     text-shadow: none;
   -webkit-text-stroke: #E03997 0.78px;
   -webkit-background-clip: text;
   background-clip: text;

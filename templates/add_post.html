@@ -1,0 +1,71 @@
+{% extends "static_header.html" %}
+{% load semanticui %}
+{% block body %}
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body > .grid {
+            height: 800px;
+        }
+
+        .header .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+        {% if messages %}
+            .ui.form .error.message {
+                display: block;
+            }
+        {% endif %}
+    </style>
+    <script>
+        $(document)
+            .ready(function () {
+                $('#search-select')
+                    .dropdown({
+                        debug: true
+                    })
+                ;
+            })
+        ;
+    </script>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <form class="ui large form stacked segment" method="POST" >
+                {% csrf_token %}
+                {% render_form form %}
+                <div class="ui floating selection dropdown labeled icon button" id="search-select">
+                    <i class="world icon"></i>
+                    <span class="text">Select Location</span>
+                    <div class="menu">
+                        <div class="ui icon search input">
+                            <i class="search icon"></i>
+                            <input type="text" placeholder="Search Locations...">
+                        </div>
+                        <div class="divider"></div>
+                        <div class="header">
+                            <i class="world icon"></i>
+                            Location Name
+                        </div>
+                        <div class="scrolling menu">
+                            {% for membership in user.teamsteammembership_set.all %}
+                                <div class="item">
+                                    <h4 class="ui header">{{ membership.team.nickname }}</h4>
+                                    <p>{{ membership.team.zip_code }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui fluid large submit button">Submit Post</div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
