@@ -23,12 +23,12 @@ INSTALLED_APPS = [
 ]
 
 try:
-    ROBOTGEAR_ENV = os.environ['ROBOTGEAR_ENV']
+    env = os.environ['ROBOTGEAR_ENV']
 except KeyError:
-    ROBOTGEAR_ENV = 'DEBUG'
+    env = 'DEBUG'
 
 
-if ROBOTGEAR_ENV == 'DEBUG':
+if env == 'DEBUG':
     DEBUG = True
 
     SECRET_KEY = '1$(%%u4n_(w%@6u&2%lgm^93-in4%8t&pd=o)0c_d(_n7(u&#@'
@@ -48,9 +48,9 @@ if ROBOTGEAR_ENV == 'DEBUG':
 
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-elif ROBOTGEAR_ENV == 'PROD':
+elif env == 'PROD':
     pass
-elif ROBOTGEAR_ENV == 'TEST':
+elif env == 'TEST':
     pass
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -142,6 +142,8 @@ Q_CLUSTER = {
     'name': 'robotgear',
     'workers': 2,
     'recycle': 500,
+    'catch_up': False,
+    "ack_failures": True,
     'label': 'Task Queue',
     'orm': 'default'
 }

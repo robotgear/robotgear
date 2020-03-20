@@ -1,7 +1,8 @@
 {% extends 'admin/change_list.html' %}
 
 {% block object-tools %}
-    <p> The following buttons will pull the latest data from the FIRST servers about team registration. Keep in mind these take quite a while to run, so do not refresh your browser while they're running. </p>
+    <p> The following buttons will pull the latest data from the FIRST servers about team registration.</p>
+
     <div>
         <form action="update/FRC/" method="POST">
             {% csrf_token %}
@@ -29,7 +30,13 @@
     <div>
         <form action="update/all/" method="POST">
             {% csrf_token %}
-                <button type="submit">Update Historical Teams</button>
+                <button type="submit">Update All Current FIRST Teams</button>
+        </form>
+    </div>
+    <div>
+        <form action="update/history/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Update All Historical Teams (all four programs)</button>
         </form>
     </div>
     <br />

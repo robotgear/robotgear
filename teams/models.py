@@ -16,13 +16,12 @@ class Competition(models.Model):
 
 class Team(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.PROTECT)
-    nickname = models.CharField(max_length=100, null=True)
-    team_num = models.CharField(max_length=5,
-                                null=True
+    nickname = models.TextField(max_length=100, null=True)
+    team_num = models.TextField(null=True
                                 # set so database migrations won't complain, should never be truly null in the DB
                                 )  # set to CharField to support VEX
-    zip_code = models.CharField(blank=True, max_length=20)
-    country = models.CharField(blank=True, max_length=4)
+    zip_code = models.TextField(blank=True)
+    country = models.TextField(blank=True)
     lat = models.FloatField(null=True)
     long = models.FloatField(null=True)
     last_year_competing = models.PositiveSmallIntegerField(null=True)
