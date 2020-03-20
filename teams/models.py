@@ -45,8 +45,10 @@ class Team(models.Model):
 
 class Event(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.PROTECT)
-    key = models.CharField(max_length=16)
+    key = models.TextField()
+    secondary_key = models.TextField(null=True, blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
     lat = models.FloatField(null=True)
     long = models.FloatField(null=True)
+    teams = models.ManyToManyField(Team)

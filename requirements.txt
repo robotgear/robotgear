@@ -4,3 +4,4 @@ django-semanticui-forms==1.6.5
 Pillow==7.0.0
 psycopg2==2.8.4
 requests==2.23.0
+django-q==1.2.1

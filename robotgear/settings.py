@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'semanticuiforms',
+    'django_q',
     'users',
     'teams',
     'posts',
@@ -144,3 +145,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 INTERNAL_IPS = '127.0.0.1'
 
 LOGIN_URL = 'login'
+
+Q_CLUSTER = {
+    'name': 'robotgear',
+    'workers': 2,
+    'recycle': 500,
+    'label': 'Task Queue',
+    'orm': 'default'
+}
