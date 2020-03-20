@@ -144,6 +144,7 @@ Q_CLUSTER = {
     'recycle': 500,
     'catch_up': False,
     "ack_failures": True,
+    'retry': 100000,
     'label': 'Task Queue',
     'orm': 'default'
 }
