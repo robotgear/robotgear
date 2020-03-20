@@ -19,20 +19,10 @@ def update_current_year_FIRST(comp=None):
         async_task('teams.tasks.update_FIRST_teams', comp, current_year)
 
 
-def update_all_FIRST(comp):
+def update_all_FIRST():
+    print(f"Getting all FIRST teams.")
     data = {
-        "size": 100000,
-        "query": {
-            "bool": {
-                "must": [
-                    {
-                        "match": {
-                            "team_type": comp
-                        }
-                    }
-                ]
-            }
-        },
+        "size": 1000000,
         "_source": [
             "team_number_yearly",
             "team_nickname",
@@ -44,9 +34,11 @@ def update_all_FIRST(comp):
         ]
     }
     fetch_FIRST_teams(data)
+    print(f"Finished getting all FIRST teams.")
 
 
 def update_FIRST_teams(comp, year):
+    print(f"Getting {comp} teams from {year}")
     data = {
         "size": 100000,
         "query": {
@@ -76,11 +68,11 @@ def update_FIRST_teams(comp, year):
         ]
     }
     fetch_FIRST_teams(data)
+    print(f"Finished getting {comp} teams from {year}")
 
 
 def fetch_FIRST_teams(payload):
     url = "https://es02.firstinspires.org/teams_v1/_search"
-    print("Beginning FIRST Team Import")
     r = requests.request(method='get', url=url, data=json.dumps(payload))
     print("Received FIRST Teams.")
     data = r.json()["hits"]["hits"]
@@ -90,10 +82,23 @@ def fetch_FIRST_teams(payload):
 def process_FIRST_teams(data):
     for team_data in data:
         team_data = team_data["_source"]
-        if team_data["team_number_yearly"] > 1000000:
+        if team_data["team_number_yearly"] > 1000000 or team_data['team_number_yearly'] < 0:
             # Done to ignore the temporary numbers given by FIRST (aka 2019000065 or whatever)
             # At some point, add the necessary tracking for that (store FIRST's internal team number in here so we
             # can switch it to their real number when they get it)
+            continue
+
+        try:
+            nick = team_data["team_nickname"]
+        except KeyError:
+            nick = f"Team {team_data['team_number_yearly']}"
+
+        try:
+            zip_code = team_data["team_postalcode"]
+        except KeyError:
+            zip_code = ""
+
+        if not team_data["team_type"] in FIRST_PROGRAMS:
             continue
 
         try:
@@ -102,13 +107,14 @@ def process_FIRST_teams(data):
                                         team_num=team_data["team_number_yearly"])
         except Team.DoesNotExist:
             # team is new to the DB, create it
+
             new_team = Team(competition=Competition.objects.get(abbreviation=team_data["team_type"]),
                             team_num=team_data["team_number_yearly"],
-                            zip_code=team_data["team_postalcode"],
+                            zip_code=zip_code,
                             country=team_data["countryCode"],
                             lat=team_data["location"][0]["lat"],
                             long=team_data["location"][0]["lon"],
-                            nickname=team_data["team_nickname"],
+                            nickname=nick,
                             last_year_competing=team_data["profile_year"],
                             added_manually=False
                             )
@@ -117,10 +123,10 @@ def process_FIRST_teams(data):
 
         if team_get.last_year_competing <= team_data["profile_year"]:
             # if the recorded last year is less than or equal to the gotten year, update the team
-            team_get.zip_code = team_data["team_postalcode"]
+            team_get.zip_code = zip_code
             team_get.country = team_data["countryCode"]
             team_get.lat = team_data["location"][0]["lat"]
             team_get.long = team_data["location"][0]["lon"]
-            team_get.nickname = team_data["team_nickname"]
+            team_get.nickname = nick
             team_get.last_year_competing = team_data["profile_year"]
             team_get.save()
