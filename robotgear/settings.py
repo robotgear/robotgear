@@ -40,8 +40,10 @@ if env == 'DEBUG':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'robotgear',
-            'HOST': '127.0.0.1',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'db',
             'PORT': '5432',
         }
     }
@@ -147,4 +149,11 @@ Q_CLUSTER = {
     'retry': 100000,
     'label': 'Task Queue',
     'orm': 'default'
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'unix:/tmp/memcached.sock',
+    }
 }
